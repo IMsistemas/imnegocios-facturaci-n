@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use imfa\Http\Requests;
 use imfa\Http\Controllers\Controller;
 use imfa\Modelos\Nomencladores\Establecimiento;
+use imfa\Modelos\Nomencladores\Schema;
 
 class EstablecimientoController extends Controller
 {
@@ -48,11 +49,16 @@ class EstablecimientoController extends Controller
         $datas = request()->all();
         //Establecimiento::create($datas);
 
+        $schemasInstance = Schema::find(1);
+
+        echo '$schemasInstance: ' . $schemasInstance->id ;
+
         Establecimiento::create([
             'codigo' => $datas['codigo'],
             'descripcion' => $datas['descripcion'],
             'direccion' => $datas['direccion'],
             'habilitado' => true ,
+            'schemas_id' => $schemasInstance->id ,
         ])->save();
 
         return Redirect::to('establecimiento');

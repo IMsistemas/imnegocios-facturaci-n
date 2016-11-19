@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading">Crear Establecimientos</div>
 
                 <div class="panel-body">
                     {!! Form::open([ 'route' => 'establecimiento.store' , 'method' => 'POST'  ]) !!}
@@ -26,7 +26,7 @@
                             {!! Form::checkbox('name', 'value')!!}
                         </div>
 
-                    <button class="btn btn-default" type="submit">Enviar</button>
+                        <button class="btn btn-default" type="submit">Enviar</button>
                     {!! Form::close() !!}
 
                 </div>

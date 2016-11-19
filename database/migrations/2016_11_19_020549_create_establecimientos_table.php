@@ -18,6 +18,12 @@ class CreateEstablecimientosTable extends Migration
             $table->string('descripcion', 300)->nullable();
             $table->string('direccion');
             $table->boolean('habilitado');
+
+
+            $table->integer('schemas_id')->unsigned();
+            $table->foreign('schemas_id')->references('id')->on('schemas');
+
+
             $table->timestamps();
         });
     }

@@ -21,8 +21,10 @@ class CreatePuntoEmisionsTable extends Migration
             $table->boolean('generaDocumentos');
             $table->timestamps();
 
+
             $table->integer('establecimiento_id')->unsigned();
             $table->foreign('establecimiento_id')->references('id')->on('establecimientos');
+
 
         });
     }

@@ -8,9 +8,11 @@ class PuntoEmision extends Model
 {
     protected $table = "punto_emisions";
 
+
     protected $fillable = [
         'codigo', 'descripcion', 'habilitado', 'conInventario', 'generaDocumentos',
     ];
+
 
     public function establecimiento()
     {
