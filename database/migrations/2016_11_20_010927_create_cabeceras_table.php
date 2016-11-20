@@ -28,6 +28,7 @@ class CreateCabecerasTable extends Migration
             $table->foreign('punto_emision_id')->references('id')->on('punto_emisions');
 
             $table->string('codigoNumerico', 23);
+            $table->string('schemaID');
 
             $table->integer('cliente_id')->unsigned();
             $table->foreign('cliente_id')->references('id')->on('clientes');

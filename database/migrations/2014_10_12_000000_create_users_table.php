@@ -19,6 +19,18 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->rememberToken();
+
+            $table->string('primerApellido');
+            $table->string('segundoApellido')->nullable();
+            $table->string('direccion', 300)->nullable();
+            $table->string('telefonoConvencional')->nullable();
+            $table->string('telefonoMovil')->nullable();
+            $table->date('fechaAlta')->nullable();
+            $table->string('descripcion', 1000)->nullable();
+            $table->string('foto', 1000000)->nullable();
+            $table->string('schemaID')->nullable();
+            $table->integer('claveRegistro')->nullable();
+
             $table->timestamps();
 
             $table->index('username', 'im_index_username');
