@@ -96,7 +96,7 @@ class CreateCabecerasTable extends Migration
             $table->string('claveAccesoBarcode')->nullable();  // revisar deberia ser byte[]
             $table->string('claveAccesoOriginal')->nullable();
             $table->string('motivo', 300)->nullable();
-            $table->string('declaracionAduanera');
+            $table->string('declaracionAduanera')->nullable();
             $table->string('codigoEstablecimientoDestinatario', 3)->nullable();
             $table->string('ruta', 300)->nullable();
 

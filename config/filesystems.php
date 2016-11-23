@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => 'local',
+    'default' => 'ftp',
 
     /*
     |--------------------------------------------------------------------------
@@ -60,6 +60,24 @@ return [
             'secret' => 'your-secret',
             'region' => 'your-region',
             'bucket' => 'your-bucket',
+        ],
+
+        'ftp' => [
+            'driver'   => 'ftp',
+            'host'     => '192.185.171.23',
+            'username' => 'imfacturacion',
+            'password' => 'EysK1i6E',
+            'port'     => 21,
+            'passive'  => true,
+            'root'     => '/public_html',
+
+
+            // Optional FTP Settings...
+            // 'port'     => 21,
+            // 'root'     => '',
+            // 'passive'  => true,
+            // 'ssl'      => true,
+            // 'timeout'  => 30,
         ],
 
     ],

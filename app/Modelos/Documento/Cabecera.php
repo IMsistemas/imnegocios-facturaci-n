@@ -9,7 +9,7 @@ class Cabecera extends Model
     protected $table = "cabeceras";
 
     protected $fillable = [
-
+        'establecimientoCodigo', 'puntoEmisionCodigo', 'comprobante' ,'tipoDocumentoCodigo', 'identificacionCliente',
     ];
 
     public function cabeceraDetalles()

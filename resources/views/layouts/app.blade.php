@@ -66,6 +66,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/establecimiento') }}"><i class="fa fa-btn fa-sign-out"></i>Listado Establecimiento</a></li>
                                 <li><a href="{{ url('/establecimiento/create') }}"><i class="fa fa-btn fa-sign-out"></i>Crear Establecimiento</a></li>
+                                <li><a href="{{ url('/documentos') }}"><i class="fa fa-btn fa-sign-out"></i>Listado documentos</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Salir</a></li>
                             </ul>
                         </li>

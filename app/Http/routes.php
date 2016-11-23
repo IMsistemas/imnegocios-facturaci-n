@@ -19,7 +19,10 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+Route::get('/filesftp', 'HomeController@ftpfile');
+
 Route::resource('establecimiento', 'Nomencladores\EstablecimientoController');
 
+Route::resource('documentos', 'Documento\CabeceraController');
 
 
