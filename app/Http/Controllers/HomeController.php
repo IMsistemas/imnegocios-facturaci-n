@@ -51,10 +51,12 @@ class HomeController extends Controller
         dd($xmlcomprobante)   ;
 
 
+        // solo para xml tipo facturas, no autorizados
         $factura = $filesystem->get('imfacturacion.com/public/factura.xml');
         $facturas = new \SimpleXMLElement($factura);
-
         echo '  _codigo documento: ' . $facturas->infoTributaria->codDoc . '  ';
+
+
 
         return  $facturas->infoTributaria->razonSocial;
 

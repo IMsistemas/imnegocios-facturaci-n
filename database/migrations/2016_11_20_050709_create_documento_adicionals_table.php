@@ -18,6 +18,9 @@ class CreateDocumentoAdicionalsTable extends Migration
             $table->string('nombre', 25);
             $table->string('descripcion', 300);
 
+            $table->integer('cabeceras_id')->unsigned()->nullable();
+            $table->foreign('cabeceras_id')->references('id')->on('cabeceras');
+
             $table->timestamps();
         });
     }

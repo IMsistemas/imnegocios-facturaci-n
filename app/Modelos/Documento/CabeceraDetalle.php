@@ -9,6 +9,44 @@ class CabeceraDetalle extends Model
     protected $table = "cabecera_detalles";
 
     protected $fillable = [
+        'cabeceras_id' ,
+
+        'numero',
+        'cantidad',
+        'costo',
+        'precio',
+        'importe',
+        'descuento',
+        'valorBase',
+        'impuestos',
+        'valorTotal',
+
+        'ivaID',
+        'ivaCodigo',
+        'ivaTipoImpuestoCodigo',
+        'ivaPorcentaje',
+        'valorIva',
+
+        'iceID',
+        'iceCodigo',
+        'iceTipoImpuestoCodigo',
+        'icePorcentaje',
+        'valorIce',
+
+        'impuesto_retencion_id',
+        'impuestoRetencionCodigo',
+        'impuestoRetencionTipoImpuestoCodigo',
+        'impuestoRetencionPorcentaje',
+
+        'tipoDocumentoRetenido_id',
+        'tipoDocumentoRetenidoCodigo',
+        'documentoRetenido',
+        'fechaDocumentoRetenido',
+        'razonModificacion',
+
+        'valorModificacion',
+        'baseImponible',
+        'valorRetencion',
 
     ];
 

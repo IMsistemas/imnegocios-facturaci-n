@@ -20,6 +20,7 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 
 Route::get('/filesftp', 'HomeController@ftpfile');
+Route::get('/ftp', 'Documento\CabeceraController@cargaftp');
 
 Route::resource('establecimiento', 'Nomencladores\EstablecimientoController');
 

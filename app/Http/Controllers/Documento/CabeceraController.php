@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use imfa\Http\Requests;
 use imfa\Http\Controllers\Controller;
 use imfa\Modelos\Documento\Cabecera;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 class CabeceraController extends Controller
 {
@@ -88,5 +89,29 @@ class CabeceraController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+
+    public function cargaftp(Filesystem $filesystem){
+
+        $xml = $filesystem->get('imfacturacion.com/public/facturaCDATA.xml') ;
+        $xmls = new \SimpleXMLElement($xml);
+
+        echo ' -- estado: '. $xmls->estado ;
+        echo ' -- numeroAutorizacion: '. $xmls->numeroAutorizacion;
+        echo ' -- fechaAutorizacion: '. $xmls->fechaAutorizacion;
+        $xmlCDATA = new \SimpleXMLElement($xmls->comprobante);
+
+        $fecha_actual = date('Y-m-d');
+        $date = new \DateTime($xmls->fechaAutorizacion);
+        $fromateada = $date->format('Y-d-m H:i:s');
+
+
+
+        dd($fromateada)   ;
+        return  $date;
+
+        //return 'holaaaa ftpfile';
     }
 }

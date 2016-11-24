@@ -23,12 +23,12 @@ class CreateCabecerasTable extends Migration
             $table->string('establecimientoCodigo', 3);
             $table->string('establecimientoDireccion', 300)->nullable();
 
-            $table->string('puntoEmisionCodigo', 3);
-            $table->integer('punto_emision_id')->unsigned();
+            $table->string('puntoEmisionCodigo', 3)->nullable();
+            $table->integer('punto_emision_id')->unsigned()->nullable();
             $table->foreign('punto_emision_id')->references('id')->on('punto_emisions');
 
-            $table->string('codigoNumerico', 23);
-            $table->string('schemaID');
+            $table->string('codigoNumerico', 23)->nullable();
+            $table->string('schemaID')->nullable();
 
             $table->integer('cliente_id')->unsigned();
             $table->foreign('cliente_id')->references('id')->on('clientes');
@@ -102,7 +102,10 @@ class CreateCabecerasTable extends Migration
 
             $table->boolean('correoEnviado')->nullable();
             $table->boolean('seleccionado', false );
-            $table->string('xml')->nullable();
+            $table->string('xml', 1000000)->nullable();
+
+            $table->integer('schemas_id')->unsigned()->nullable();
+            $table->foreign('schemas_id')->references('id')->on('schemas');
 
             $table->timestamps();
         });
