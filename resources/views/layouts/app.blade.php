@@ -12,9 +12,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+    <link rel="stylesheet" href="/datatable/bootstrap-datatables/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" media="all" href="/datatable/bootstrap-datatables/css/datatables.min.css" type="text/css">
+
+
+
 
     <style>
         body {
@@ -62,9 +69,10 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/establecimiento') }}"><i class="fa fa-btn fa-sign-out"></i>Listado Establecimiento</a></li>
-                                <li><a href="{{ url('/establecimiento/create') }}"><i class="fa fa-btn fa-sign-out"></i>Crear Establecimiento</a></li>
-                                <li><a href="{{ url('/documentos') }}"><i class="fa fa-btn fa-sign-out"></i>Listado documentos</a></li>
+                                <li><a href="{{ url('/establecimiento') }}">Listado Establecimiento</a></li>
+                                <li><a href="{{ url('/establecimiento/create') }}">Crear Establecimiento</a></li>
+                                <li><a href="{{ url('/documentos') }}">Listado documentos</a></li>
+                                <li><a href="{{ url('/ftp') }}">Importar ftp</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Salir</a></li>
                             </ul>
                         </li>
@@ -79,7 +87,15 @@
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+
+    <script type="text/javascript" src="/datatable/bootstrap-datatables/js/datatables.min.js"></script>
+    {{-- <script src="{{ elixir('js/app.js') }}"></script>    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script> --}}
+
+    <script>
+        $(document).ready(function(){
+            $('#myTable').DataTable();
+        });
+    </script>
+
 </body>
 </html>

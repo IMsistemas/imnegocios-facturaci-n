@@ -15,6 +15,9 @@ class CreateCabeceraDetallesTable extends Migration
         Schema::create('cabecera_detalles', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->string('codigoProducto')->nullable();
+            $table->string('codigoAuxiliarProducto')->nullable();
+            $table->string('descripcion')->nullable();
 
             $table->integer('numero')->nullable();
             $table->decimal('cantidad', 19, 6)->nullable();

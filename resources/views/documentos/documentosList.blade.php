@@ -40,10 +40,5 @@
     </div>
 </div>
 
-    <script>
-        $(document).ready(function(){
-            $('#myTable').DataTable();
-        });
-    </script>
-
 @endsection
+

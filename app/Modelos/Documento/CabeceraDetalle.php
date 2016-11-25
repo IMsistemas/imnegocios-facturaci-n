@@ -11,6 +11,9 @@ class CabeceraDetalle extends Model
     protected $fillable = [
         'cabeceras_id' ,
 
+        'codigoProducto',
+        'codigoAuxiliarProducto',
+        'descripcion',
         'numero',
         'cantidad',
         'costo',
