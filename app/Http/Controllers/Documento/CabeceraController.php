@@ -199,7 +199,7 @@ class CabeceraController extends Controller
     }
 
 
-    public function download($id){
+   /* public function download($id){
         echo ' id: ' . $id ;
 
         $cabeceraInstance = Cabecera::find($id);
@@ -207,12 +207,12 @@ class CabeceraController extends Controller
        // echo ' $cabeceraInstance: ' . $cabeceraInstance->xml;
 
         $file= $cabeceraInstance->xml ;
+        header('Content-type: text/xml');
+        header('Content-Disposition: attachment; filename="textxmmmmml.xml"');
+        echo $file ;
 
-        $xml = new \SimpleXMLElement($cabeceraInstance->xml);
-
-       return $xml->asXML();
-
-    }
+       // return $xml->asXML();
+    }*/
 
 
     private static function headers($filename, $now)

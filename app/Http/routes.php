@@ -26,4 +26,4 @@ Route::resource('establecimiento', 'Nomencladores\EstablecimientoController');
 
 Route::resource('documentos', 'Documento\CabeceraController');
 
-Route::get('/download/{file}', 'Documento\CabeceraController@download');
+Route::get('/download/{file}', 'HomeController@downloads');
