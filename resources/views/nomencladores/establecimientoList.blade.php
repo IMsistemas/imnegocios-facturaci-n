@@ -14,10 +14,10 @@
                         <table class="table" id="myTable">
                             <thead>
                             <tr>
-                                <th> codigo </th>
-                                <th> descripcion </th>
-                                <th> direccion </th>
-                                <th> habilitado </th>
+                                <th> Código </th>
+                                <th> Descripción </th>
+                                <th> Dirección </th>
+                                <th> Habilitado </th>
                             </tr>
                             </thead>
                             <tbody>

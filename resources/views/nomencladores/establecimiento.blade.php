@@ -5,21 +5,21 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Crear Establecimientos</div>
+                <div class="panel-heading">Crear establecimientos</div>
 
                 <div class="panel-body">
                     {!! Form::open([ 'route' => 'establecimiento.store' , 'method' => 'POST'  ]) !!}
                         <div class="form-group">
                         {!! Form::label('Código')!!}
-                        {!! Form::text('codigo', null, ['class'=>'form-control', 'placeholder'=>'Ingresar codigo'])!!}
+                        {!! Form::text('codigo', null, ['class'=>'form-control', 'placeholder'=>'Ingresar código'])!!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Descripcion')!!}
-                            {!! Form::text('descripcion', null, ['class'=>'form-control', 'placeholder'=>'Ingresar descripcion'])!!}
+                            {!! Form::label('Descripción')!!}
+                            {!! Form::text('descripcion', null, ['class'=>'form-control', 'placeholder'=>'Ingresar descripción'])!!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Direccion')!!}
-                            {!! Form::text('direccion', null, ['class'=>'form-control', 'placeholder'=>'Ingresar Direccion'])!!}
+                            {!! Form::label('Dirección')!!}
+                            {!! Form::text('direccion', null, ['class'=>'form-control', 'placeholder'=>'Ingresar Dirección'])!!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('Habilitado')!!}

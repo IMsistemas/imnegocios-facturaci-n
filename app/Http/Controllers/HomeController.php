@@ -2,6 +2,7 @@
 
 namespace imfa\Http\Controllers;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use imfa\Http\Requests;
 use Illuminate\Http\Request;
@@ -34,7 +35,30 @@ class HomeController extends Controller
         // $filesystem->get('imfacturacion.com/public/facturaCDATA.xml') ;
         // $filesystem->get('imfacturacion.com/public/factura.xml') ;
 
-        $xml = $filesystem->get('imfacturacion.com/public/facturaCDATA.xml') ;
+        $desde = 'XML' ;
+        $destino = 'XMLTMP' ;
+
+        $filesxmls = $filesystem->files('XML') ;
+
+        foreach( $filesxmls as $fils ){
+           //  echo '$fils: ' . $fils ;
+
+            $xmlx = $filesystem->get($fils) ;
+            $xmlstmp = new \SimpleXMLElement($xmlx);
+            $xmlcomprobantetmp = new \SimpleXMLElement($xmlstmp->comprobante);
+            echo ' secuencial: ' . $xmlcomprobantetmp->infoTributaria->secuencial;
+
+
+            try{
+                $filesystem->delete($fils) ;
+            }catch (FileNotFoundException $e ){
+                echo ' FileNotFoundException ' . $e ;
+            }
+
+        }
+
+
+     /*   $xml = $filesystem->get('XML/0109201601179218265400120010010000000010000000115.xml') ;
         $xmls = new \SimpleXMLElement($xml);
 
         echo ' ---- $xml_object: '. $xmls->estado ;
@@ -46,21 +70,21 @@ class HomeController extends Controller
             echo ' __detalle precioTotalSinImpuesto = ', $detail->precioTotalSinImpuesto;
         }
 
-        echo ' campoAdicional[0]: ' . $xmlcomprobante->infoAdicional->campoAdicional[0];
+        echo ' campoAdicional[0]: ' . $xmlcomprobante->infoAdicional->campoAdicional[0];*/
 
-        dd($xmlcomprobante)   ;
+        //dd($xmlcomprobante)   ;
 
 
         // solo para xml tipo facturas, no autorizados
-        $factura = $filesystem->get('imfacturacion.com/public/factura.xml');
+        /*$factura = $filesystem->get('imfacturacion.com/public/factura.xml');
         $facturas = new \SimpleXMLElement($factura);
-        echo '  _codigo documento: ' . $facturas->infoTributaria->codDoc . '  ';
+        echo '  _codigo documento: ' . $facturas->infoTributaria->codDoc . '  ';*/
 
 
 
-        return  $facturas->infoTributaria->razonSocial;
+       // return  $xmls->estado ;
 
-        //return 'holaaaa ftpfile';
+        return 'holaaaa ftpfile';
     }
 
 

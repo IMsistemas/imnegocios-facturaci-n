@@ -97,82 +97,138 @@ class CabeceraController extends Controller
 
     public function cargaftp(Filesystem $filesystem){
 
-        $xml = $filesystem->get('imfacturacion.com/public/facturaCDATA.xml') ;
-        $xmls = new \SimpleXMLElement($xml);
+       // $xml = $filesystem->get('XML/0109201601179218265400120010010000000010000000115.xml') ;
+       // $xmls = new \SimpleXMLElement($xml);
 
         //echo ' -- estado: '. $xmls->estado ;
         //echo ' -- numeroAutorizacion: '. $xmls->numeroAutorizacion;
         //echo ' -- fechaAutorizacion: '. $xmls->fechaAutorizacion;
-        $xmlCDATA = new \SimpleXMLElement($xmls->comprobante);
-
-        $fecha_actual = date('Y-m-d');
-        $date = new \DateTime($xmls->fechaAutorizacion);
-        $fromateada = $date->format('Y-d-m H:i:s');
-
-        // crear
-        $tipoDocumentoInstance = TipoDocumento::find(1);
-        $clienteInstance = Cliente::find(1);
-
-        $cabeceraInstance = new Cabecera();
-
-        $cabeceraInstance->autorizado = true ;
-        $cabeceraInstance->autorizo = $xmls->numeroAutorizacion;
-        $cabeceraInstance->fechaAutorizo = $fromateada;
-
-        // ---- infoTributaria ----
-        $cabeceraInstance->tipoAmbienteCodigo = $xmlCDATA->infoTributaria->ambiente ;           // nn
-        $cabeceraInstance->tipoEmisionCodigo = $xmlCDATA->infoTributaria->tipoEmision ;
-        $cabeceraInstance->razonSocialCliente =  $xmlCDATA->infoTributaria->razonSocial;        // nn
-             // ruc  para verificar con schemas
-        $cabeceraInstance->claveAcceso = $xmlCDATA->infoTributaria->claveAcceso  ;
-        $cabeceraInstance->tipoDocumentoCodigo = $xmlCDATA->infoTributaria->codDoc   ;          // nn
-        $cabeceraInstance->establecimientoCodigo = $xmlCDATA->infoTributaria->estab ;           // nn
-        $cabeceraInstance->puntoEmisionCodigo = $xmlCDATA->infoTributaria->ptoEmi ;             // nn
-        $cabeceraInstance->comprobante = $xmlCDATA->infoTributaria->secuencial ;                // nn
-        $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoTributaria->dirMatriz ;
 
 
-        if( $xmlCDATA->infoTributaria->codDoc == '01' ){
-            //echo 'es documento factura' ;
+        $filesxmls = $filesystem->files('XML') ;
+
+        foreach( $filesxmls as $fils ){
+            //  echo '$fils: ' . $fils ;
+
+            $xmlx = $filesystem->get($fils) ;
+            $xmls = new \SimpleXMLElement($xmlx);
+            $xmlCDATA = new \SimpleXMLElement($xmls->comprobante);
+
+
+            $fecha_actual = date('Y-m-d');
+            $date = new \DateTime($xmls->fechaAutorizacion);
+            $fromateada = $date->format('Y-d-m H:i:s');
+
+            // crear
+            $tipoDocumentoInstance = TipoDocumento::find(1);
+            $clienteInstance = Cliente::find(1);
+
+            $cabeceraInstance = new Cabecera();
+
+            $cabeceraInstance->autorizado = true ;
+            $cabeceraInstance->autorizo = $xmls->numeroAutorizacion;
+            $cabeceraInstance->fechaAutorizo = $fromateada;
+
+            // ---- infoTributaria ----
+            $cabeceraInstance->tipoAmbienteCodigo = $xmlCDATA->infoTributaria->ambiente ;           // nn
+            $cabeceraInstance->tipoEmisionCodigo = $xmlCDATA->infoTributaria->tipoEmision ;
+            $cabeceraInstance->razonSocialCliente =  $xmlCDATA->infoTributaria->razonSocial;        // nn
+            // ruc  para verificar con schemas
+            $cabeceraInstance->claveAcceso = $xmlCDATA->infoTributaria->claveAcceso  ;
+            $cabeceraInstance->tipoDocumentoCodigo = $xmlCDATA->infoTributaria->codDoc   ;          // nn
+            $cabeceraInstance->establecimientoCodigo = $xmlCDATA->infoTributaria->estab ;           // nn
+            $cabeceraInstance->puntoEmisionCodigo = $xmlCDATA->infoTributaria->ptoEmi ;             // nn
+            $cabeceraInstance->comprobante = $xmlCDATA->infoTributaria->secuencial ;                // nn
+            $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoTributaria->dirMatriz ;
+
+
+            if( $xmlCDATA->infoTributaria->codDoc == '01' ){
+                //echo 'es documento factura' ;
+            }
+
+            $cabeceraInstance->fechaEmision = $xmlCDATA->infoFactura->fechaEmision ;
+            $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoFactura->dirEstablecimiento ;
+            // obligadoContabilidad
+            $cabeceraInstance->tipoIdentificacionClienteCodigo = $xmlCDATA->infoFactura->tipoIdentificacionComprador ;
+            $cabeceraInstance->razonSocialCliente = $xmlCDATA->infoFactura->razonSocialComprador ;
+            $cabeceraInstance->identificacionCliente = $xmlCDATA->infoFactura->identificacionComprador ;
+            $cabeceraInstance->valorBase =  $xmlCDATA->infoFactura->totalSinImpuestos ;
+            $cabeceraInstance->descuento =  $xmlCDATA->infoFactura->totalDescuento ;
+            $cabeceraInstance->valorTotal =  $xmlCDATA->infoFactura->importeTotal ;
+            $cabeceraInstance->tipo_documento_id = $tipoDocumentoInstance->id;      // nn
+            $cabeceraInstance->cliente_id = $clienteInstance->id  ;                // nn
+            $cabeceraInstance->direccionCliente = 'direccion';                      // nn
+            // tipo_ambientes
+            $cabeceraInstance->tipo_ambiente_id = 1 ;                               // nn
+            $cabeceraInstance->tipo_emision_id = 1;                              // nn
+            $cabeceraInstance->seleccionado = true;
+
+            $cabeceraInstance->xml = $filesystem->get($fils) ;
+
+            $cabeceraInstance->save();
+
+
+
+            //Detalles --- Facturas   --- verificar  if( $xmlCDATA->infoTributaria->codDoc == '01' )
+            foreach ($xmlCDATA->detalles->detalle as $detail) {
+                $cabeceraDetalleInstance = new CabeceraDetalle();
+                $cabeceraDetalleInstance->codigoProducto = $detail->codigoPrincipal ;
+                $cabeceraDetalleInstance->descripcion = $detail->descripcion ;
+                $cabeceraDetalleInstance->cantidad = $detail->cantidad ;
+                $cabeceraDetalleInstance->precio = $detail->precioUnitario;
+                $cabeceraDetalleInstance->descuento = $detail->descuento;
+                $cabeceraDetalleInstance->valorBase = $detail->precioTotalSinImpuesto;
+                $cabeceraDetalleInstance->cabeceras_id = $cabeceraInstance->id ;
+                $cabeceraDetalleInstance->save();
+            }
+
+
+            try{
+                $filesystem->delete($fils) ;
+            }catch (FileNotFoundException $e ){
+                echo ' FileNotFoundException ' . $e ;
+            }
+
         }
 
-        $cabeceraInstance->fechaEmision = $xmlCDATA->infoFactura->fechaEmision ;
-        $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoFactura->dirEstablecimiento ;
-        // obligadoContabilidad
-        $cabeceraInstance->tipoIdentificacionClienteCodigo = $xmlCDATA->infoFactura->tipoIdentificacionComprador ;
-        $cabeceraInstance->razonSocialCliente = $xmlCDATA->infoFactura->razonSocialComprador ;
-        $cabeceraInstance->identificacionCliente = $xmlCDATA->infoFactura->identificacionComprador ;
-        $cabeceraInstance->valorBase =  $xmlCDATA->infoFactura->totalSinImpuestos ;
-        $cabeceraInstance->descuento =  $xmlCDATA->infoFactura->totalDescuento ;
-        $cabeceraInstance->valorTotal =  $xmlCDATA->infoFactura->importeTotal ;
-        $cabeceraInstance->tipo_documento_id = $tipoDocumentoInstance->id;      // nn
-        $cabeceraInstance->cliente_id = $clienteInstance->id  ;                // nn
-        $cabeceraInstance->direccionCliente = 'direccion';                      // nn
-       // tipo_ambientes
-        $cabeceraInstance->tipo_ambiente_id = 1 ;                               // nn
-        $cabeceraInstance->tipo_emision_id = 1;                              // nn
-        $cabeceraInstance->seleccionado = true;
-        $cabeceraInstance->save();
 
-
-
-        //Detalles --- Facturas   --- verificar  if( $xmlCDATA->infoTributaria->codDoc == '01' )
-        foreach ($xmlCDATA->detalles->detalle as $detail) {
-            $cabeceraDetalleInstance = new CabeceraDetalle();
-            $cabeceraDetalleInstance->codigoProducto = $detail->codigoPrincipal ;
-            $cabeceraDetalleInstance->descripcion = $detail->descripcion ;
-            $cabeceraDetalleInstance->cantidad = $detail->cantidad ;
-            $cabeceraDetalleInstance->precio = $detail->precioUnitario;
-            $cabeceraDetalleInstance->descuento = $detail->descuento;
-            $cabeceraDetalleInstance->valorBase = $detail->precioTotalSinImpuesto;
-            $cabeceraDetalleInstance->cabeceras_id = $cabeceraInstance->id ;
-            $cabeceraDetalleInstance->save();
-        }
-
-
-       // dd($fromateada);
+      //  dd($xmlCDATA);
       //  return  $date;
-        //return 'holaaaa ftpfile';
+       // return 'holaaaa ftpfile';
         return redirect('/documentos');
     }
+
+
+    public function download($id){
+        echo ' id: ' . $id ;
+
+        $cabeceraInstance = Cabecera::find($id);
+
+       // echo ' $cabeceraInstance: ' . $cabeceraInstance->xml;
+
+        $file= $cabeceraInstance->xml ;
+
+        $xml = new \SimpleXMLElement($cabeceraInstance->xml);
+
+       return $xml->asXML();
+
+    }
+
+
+    private static function headers($filename, $now)
+    {
+        header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+        header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
+        header("Last-Modified: {$now} GMT");
+
+        // force download
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+
+        // disposition / encoding on response body
+        header("Content-Disposition: attachment;filename={$filename}");
+        header("Content-Transfer-Encoding: binary");
+    }
+
 }

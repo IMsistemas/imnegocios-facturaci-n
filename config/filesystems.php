@@ -64,12 +64,12 @@ return [
 
         'ftp' => [
             'driver'   => 'ftp',
-            'host'     => '192.185.171.23',
+            'host'     => '144.208.65.224',
             'username' => 'imfacturacion',
             'password' => 'EysK1i6E',
             'port'     => 21,
             'passive'  => true,
-            'root'     => '/public_html',
+            'root'     => '/archivo_xml',
 
 
             // Optional FTP Settings...

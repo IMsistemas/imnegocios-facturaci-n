@@ -14,11 +14,12 @@
                         <table class="table" id="myTable">
                             <thead>
                             <tr>
-                                <th> puntoEmision </th>
-                                <th> establecimiento </th>
-                                <th> comprobante </th>
-                                <th> tipoDocumento </th>
-                                <th> identificacion </th>
+                                <th> Punto emisión </th>
+                                <th> Establecimiento </th>
+                                <th> Comprobante </th>
+                                <th> Tipo documento </th>
+                                <th> Identificación </th>
+                                <th> Descargar </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -29,6 +30,9 @@
                                     <td>{{$docu->comprobante}} </td>
                                     <td>{{$docu->tipoDocumentoCodigo}} </td>
                                     <td>{{$docu->identificacionCliente}} </td>
+
+                                    <td>     <a href="{{ url('download/'.$docu->id.'') }}">xml</a>  </td>
+
                                 </tr>
                             @endforeach
                             </tbody>
