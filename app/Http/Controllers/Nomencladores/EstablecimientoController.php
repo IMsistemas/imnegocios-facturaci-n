@@ -50,17 +50,25 @@ class EstablecimientoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
         //dd(Input::All());
         $datas = request()->all();
+
         //Establecimiento::create($datas);
+
+        $fecha_actual = date('Y-m-d');
 
         $schemasInstance = Schema::find(1);
 
         echo '$schemasInstance: ' . $schemasInstance->id ;
 
+        $establecimiento= Establecimiento::all();
+
+
+
         Establecimiento::create([
+
             'codigo' => $datas['codigo'],
             'descripcion' => $datas['descripcion'],
             'direccion' => $datas['direccion'],
