@@ -2,10 +2,9 @@
 
 namespace imfa\Http\Controllers;
 
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Response as FacadeResponse;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Http\Response;
 use imfa\Http\Requests;
 
 use imfa\Modelos\Documento\Cabecera;
@@ -39,7 +38,6 @@ class HomeController extends Controller
 
 
     public function downloads($id){
-        echo ' id: ' . $id ;
 
      /*   $cabeceraInstance = Cabecera::find($id);
         $type = 'Content-type: text/xml' ;
@@ -47,27 +45,17 @@ class HomeController extends Controller
         header('Content-type: text/xml');
         header('Content-Disposition: attachment; filename="textxmmmmml.xml"');*/
 
-
         $cabeceraInstance = Cabecera::find($id);
+        $name = $cabeceraInstance->claveAcceso;
+        $xml= $cabeceraInstance->xml ;
+        header("Content-type: text/xml");
+        header("Content-Disposition: attachment; filename= $name.xml ");
+        echo $xml;
 
-        $fileContent = $cabeceraInstance->xml ;
-
-        $file = fopen('php://output', 'w');
-        fwrite($file, $fileContent);
-        fclose($file);
-
-        $headers = array
-        (
-            'Content-Encoding: UTF-8',
-            'Content-Type' => 'text/xml',
-        );
-        return response()->download($file, 'factura.xml', $headers);
-
-
-
-
-        // return $xml->asXML();
     }
+
+
+
 
     public function ftpfile(Filesystem $filesystem){
         // $filesystem->get('imfacturacion.com/public/facturaCDATA.xml') ;
