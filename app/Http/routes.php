@@ -19,6 +19,7 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+Route::get('/pdfview/{file}', 'HomeController@downPDF');
 Route::get('/filesftp', 'HomeController@ftpfile');
 Route::get('/ftp', 'Documento\CabeceraController@cargaftp');
 
@@ -27,3 +28,5 @@ Route::resource('establecimiento', 'Nomencladores\EstablecimientoController');
 Route::resource('documentos', 'Documento\CabeceraController');
 
 Route::get('/download/{file}', 'HomeController@downloads');
+
+

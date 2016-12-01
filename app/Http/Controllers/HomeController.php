@@ -2,6 +2,7 @@
 
 namespace imfa\Http\Controllers;
 
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Response;
@@ -13,6 +14,7 @@ use imfa\Modelos\Nomencladores\Cliente;
 use imfa\Modelos\Nomencladores\TipoDocumento;
 
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 
 class HomeController extends Controller
 {
@@ -52,6 +54,17 @@ class HomeController extends Controller
         header("Content-Disposition: attachment; filename= $name.xml ");
         echo $xml;
 
+    }
+
+
+
+    public function downPDF($id){
+        $cabeceraInstance = Cabecera::find($id);
+        $name = $cabeceraInstance->claveAcceso;
+        $data = [];
+
+        $pdf = \PDF::loadView('pdfview', $data );
+        return $pdf->download( '' . $name . '.pdf');
     }
 
 

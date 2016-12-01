@@ -20,6 +20,7 @@
                                 <th> Tipo documento </th>
                                 <th> Identificación </th>
                                 <th> Descargar </th>
+                                <th> pdf </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -31,7 +32,9 @@
                                     <td>{{$docu->tipoDocumentoCodigo}} </td>
                                     <td>{{$docu->identificacionCliente}} </td>
 
-                                    <td>     <a href="{{ url('download/'.$docu->id.'') }}">xml</a>  </td>
+                                    <td> <a href="{{ url('download/'.$docu->id.'') }}">xml</a>  </td>
+
+                                    <td> <a href="{{ url('pdfview/'.$docu->id.'') }}">pdf</a>  </td>
 
                                 </tr>
                             @endforeach

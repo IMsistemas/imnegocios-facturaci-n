@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
     'CreateCabeceraDetallesTable' => $baseDir . '/database/migrations/2016_11_20_044949_create_cabecera_detalles_table.php',
     'CreateCabecerasTable' => $baseDir . '/database/migrations/2016_11_20_010927_create_cabeceras_table.php',
     'CreateClientesTable' => $baseDir . '/database/migrations/2016_11_19_235239_create_clientes_table.php',
@@ -29,6 +30,11 @@ return array(
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',
     'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/src/Facade.php',
     'File_Iterator_Factory' => $vendorDir . '/phpunit/php-file-iterator/src/Factory.php',
+    'HTML5_Data' => $vendorDir . '/dompdf/dompdf/lib/html5lib/Data.php',
+    'HTML5_InputStream' => $vendorDir . '/dompdf/dompdf/lib/html5lib/InputStream.php',
+    'HTML5_Parser' => $vendorDir . '/dompdf/dompdf/lib/html5lib/Parser.php',
+    'HTML5_Tokenizer' => $vendorDir . '/dompdf/dompdf/lib/html5lib/Tokenizer.php',
+    'HTML5_TreeBuilder' => $vendorDir . '/dompdf/dompdf/lib/html5lib/TreeBuilder.php',
     'Hamcrest\\Arrays\\IsArray' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArray.php',
     'Hamcrest\\Arrays\\IsArrayContaining' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArrayContaining.php',
     'Hamcrest\\Arrays\\IsArrayContainingInAnyOrder' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArrayContainingInAnyOrder.php',
@@ -462,6 +468,7 @@ return array(
     'PHP_Token_STRING' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_STRING_CAST' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_STRING_VARNAME' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
+    'PHP_Token_SUPER' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_SWITCH' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_Stream' => $vendorDir . '/phpunit/php-token-stream/src/Token/Stream.php',
     'PHP_Token_Stream_CachingFactory' => $vendorDir . '/phpunit/php-token-stream/src/Token/Stream/CachingFactory.php',
@@ -476,6 +483,7 @@ return array(
     'PHP_Token_UNSET' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_UNSET_CAST' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_USE' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
+    'PHP_Token_USE_FUNCTION' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_VAR' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_VARIABLE' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_WHERE' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
