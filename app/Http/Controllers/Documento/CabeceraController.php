@@ -4,12 +4,15 @@ namespace imfa\Http\Controllers\Documento;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
 use imfa\Http\Requests;
 use imfa\Http\Controllers\Controller;
 use imfa\Modelos\Documento\Cabecera;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use imfa\Modelos\Documento\CabeceraDetalle;
+use imfa\Modelos\Documento\DocumentoAdicional;
 use imfa\Modelos\Nomencladores\Cliente;
+use imfa\Modelos\Nomencladores\Schema;
 use imfa\Modelos\Nomencladores\TipoDocumento;
 
 class CabeceraController extends Controller
@@ -123,8 +126,38 @@ class CabeceraController extends Controller
             $tipoDocumentoInstance = TipoDocumento::find(1);
             $clienteInstance = Cliente::find(1);
 
-            $cabeceraInstance = new Cabecera();
+            $schemasInstance = Schema::where('ruc', $xmlCDATA->infoTributaria->ruc )
+                                    ->where('tipo_ambiente_id', $xmlCDATA->infoTributaria->ambiente )->get();
 
+            echo '$schemasInstance: ' . $schemasInstance[0]->id  ;
+            $temp = $schemasInstance[0]->id ;
+
+
+            $clientes = Cliente::all();
+            foreach( $clientes as $user ) {
+                echo '$user: ' + $user->id;
+                if( $user->schemas_id === $temp && $user->identificacion === $xmlCDATA->infoFactura->identificacionComprador ){
+                    $clienteInstance = Cliente::find($user->id);
+                }
+                else{
+                   Cliente::create([
+                        'id' => 2,
+                        'identificacion' => $xmlCDATA->infoFactura->identificacionComprador ,
+                        'razonSocial' => $xmlCDATA->infoFactura->razonSocialComprador ,
+                        'direccion' => 'direccion',
+                        'correoElectronico' => 'news@gmail.com' ,
+                        'habilitado' => true,
+                        'tipo_identificacion_id' => 2,
+                        'schemas_id' => $temp ,
+                    ])->save();
+
+                   // echo 'cliente creado: ' ;
+                }
+
+            }
+
+
+            $cabeceraInstance = new Cabecera();
             $cabeceraInstance->autorizado = true ;
             $cabeceraInstance->autorizo = $xmls->numeroAutorizacion;
             $cabeceraInstance->fechaAutorizo = $fromateada;
@@ -182,9 +215,10 @@ class CabeceraController extends Controller
                 $cabeceraDetalleInstance->save();
             }
 
+ 
 
             try{
-                $filesystem->delete($fils) ;
+              //  $filesystem->delete($fils) ;
             }catch (FileNotFoundException $e ){
                 echo ' FileNotFoundException ' . $e ;
             }
@@ -192,9 +226,6 @@ class CabeceraController extends Controller
         }
 
 
-      //  dd($xmlCDATA);
-      //  return  $date;
-       // return 'holaaaa ftpfile';
         return redirect('/documentos');
     }
 

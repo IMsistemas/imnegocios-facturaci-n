@@ -66,7 +66,6 @@ class EstablecimientoController extends Controller
         $establecimiento= Establecimiento::all();
 
 
-
         Establecimiento::create([
 
             'codigo' => $datas['codigo'],
