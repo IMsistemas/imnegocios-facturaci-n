@@ -126,7 +126,7 @@ class CabeceraController extends Controller
             $tipoDocumentoInstance = TipoDocumento::find(1);
             $clienteInstance = Cliente::find(1);
 
-            $schemasInstance = Schema::where('ruc', $xmlCDATA->infoTributaria->ruc )
+           /* $schemasInstance = Schema::where('ruc', $xmlCDATA->infoTributaria->ruc )
                                     ->where('tipo_ambiente_id', $xmlCDATA->infoTributaria->ambiente )->get();
 
             echo '$schemasInstance: ' . $schemasInstance[0]->id  ;
@@ -154,7 +154,7 @@ class CabeceraController extends Controller
                    // echo 'cliente creado: ' ;
                 }
 
-            }
+            }*/
 
 
             $cabeceraInstance = new Cabecera();
@@ -218,7 +218,7 @@ class CabeceraController extends Controller
  
 
             try{
-              //  $filesystem->delete($fils) ;
+                $filesystem->delete($fils) ;
             }catch (FileNotFoundException $e ){
                 echo ' FileNotFoundException ' . $e ;
             }
