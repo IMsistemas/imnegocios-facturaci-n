@@ -4,6 +4,7 @@ namespace imfa\Http\Controllers\Documento;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use imfa\Http\Requests;
 use imfa\Http\Controllers\Controller;
@@ -14,6 +15,9 @@ use imfa\Modelos\Documento\DocumentoAdicional;
 use imfa\Modelos\Nomencladores\Cliente;
 use imfa\Modelos\Nomencladores\Schema;
 use imfa\Modelos\Nomencladores\TipoDocumento;
+use imfa\User;
+use PhpParser\Node\Scalar\String_;
+
 
 class CabeceraController extends Controller
 {
@@ -24,11 +28,21 @@ class CabeceraController extends Controller
      */
     public function index()
     {
+        $idusuario = Auth::user()->id;
+        $userInstancet = User::find( $idusuario );
 
-        $documentosList = Cabecera::all();
-        return view('documentos/documentosList')->with('documentosCabeceraList', $documentosList );
+        if(  strlen(trim($userInstancet->schemaID)) == 0 ){
+            $counts = Cabecera::where('identificacionCliente', $userInstancet->username )->count() ;
+            $documentosList  = Cabecera::where('identificacionCliente', $userInstancet->username )->get() ;
+        }
+        else{
 
-        //return 'hola nuevo documento';
+            $getschemasid = DB::table('schemas')->where('nombre', $userInstancet->schemaID )->value('id');
+
+            $counts = Cabecera::where('schemas_id', $getschemasid )->count() ;
+            $documentosList  = Cabecera::where('schemas_id', $getschemasid  )->get() ;
+        }
+        return view('documentos/documentosList')->with( ['documentosCabeceraList'=> $documentosList, 'counts' => $counts  ] );
     }
 
     /**
@@ -103,131 +117,205 @@ class CabeceraController extends Controller
        // $xml = $filesystem->get('XML/0109201601179218265400120010010000000010000000115.xml') ;
        // $xmls = new \SimpleXMLElement($xml);
 
-        //echo ' -- estado: '. $xmls->estado ;
-        //echo ' -- numeroAutorizacion: '. $xmls->numeroAutorizacion;
-        //echo ' -- fechaAutorizacion: '. $xmls->fechaAutorizacion;
+        $idusuario = Auth::user()->id;
+        $userInstancet = User::find( $idusuario );
+
+        if(  strlen(trim($userInstancet->schemaID)) > 2 ){
 
 
-        $filesxmls = $filesystem->files('XML') ;
+            $filesxmls = $filesystem->files('XML') ;
 
-        foreach( $filesxmls as $fils ){
-            //  echo '$fils: ' . $fils ;
+            foreach( $filesxmls as $fils ){
+                //  echo '$fils: ' . $fils ;
 
-            $xmlx = $filesystem->get($fils) ;
-            $xmls = new \SimpleXMLElement($xmlx);
-            $xmlCDATA = new \SimpleXMLElement($xmls->comprobante);
-
-
-            $fecha_actual = date('Y-m-d');
-            $date = new \DateTime($xmls->fechaAutorizacion);
-            $fromateada = $date->format('Y-d-m H:i:s');
-
-            // crear
-            $tipoDocumentoInstance = TipoDocumento::find(1);
-            $clienteInstance = Cliente::find(1);
-
-           /* $schemasInstance = Schema::where('ruc', $xmlCDATA->infoTributaria->ruc )
-                                    ->where('tipo_ambiente_id', $xmlCDATA->infoTributaria->ambiente )->get();
-
-            echo '$schemasInstance: ' . $schemasInstance[0]->id  ;
-            $temp = $schemasInstance[0]->id ;
+                $xmlx = $filesystem->get($fils) ;
+                $xmls = new \SimpleXMLElement($xmlx);
+                $xmlCDATA = new \SimpleXMLElement($xmls->comprobante);
 
 
-            $clientes = Cliente::all();
-            foreach( $clientes as $user ) {
-                echo '$user: ' + $user->id;
-                if( $user->schemas_id === $temp && $user->identificacion === $xmlCDATA->infoFactura->identificacionComprador ){
-                    $clienteInstance = Cliente::find($user->id);
+                $fecha_actual = date('Y-m-d');
+                $date = new \DateTime($xmls->fechaAutorizacion);
+                $fromateada = $date->format('Y-d-m H:i:s');
+
+
+
+                $direccionCliente = '';
+                $emailCliente = '';
+
+                foreach ($xmlCDATA->infoAdicional->campoAdicional as $campos) {
+                    // echo ' --- campos --- : ' . $campos->attributes()  . '<br>' ;
+                    // echo ' valor: ' . $campos  . '<br>' ;
+
+                    if( $campos->attributes() == 'Direccion' ){
+                        $direccionCliente =  $campos ;
+                    }
+
+                    if( $campos->attributes() == 'Email' ){
+                        $emailCliente =  $campos ;
+                    }
+                }
+
+                // tipoDocumento
+                $tipoDocumentoInstanceId = DB::table('tipo_documentos')->where('codigo',  $xmlCDATA->infoTributaria->codDoc )->value('id');
+
+                // tipoEmision
+                $getTipoEmisionsid = DB::table('tipo_emisions')->where('codigo',  $xmlCDATA->infoTributaria->tipoEmision )->value('id');
+
+                // id del esquema al que viene el xml a importado
+                $getTipoAmbienteid = DB::table('tipo_ambientes')->where('codigo',  $xmlCDATA->infoTributaria->ambiente )->value('id');
+
+                // buscando el equema al que pertenece ese xml
+                $getschemasid = DB::table('schemas')->where('ruc',  $xmlCDATA->infoTributaria->ruc )
+                    ->where('tipo_ambiente_id',  $getTipoAmbienteid )->value('id');
+
+                $getTipoIdentificacionsid = DB::table('tipo_identificacions')->where('codigo',  $xmlCDATA->infoFactura->tipoIdentificacionComprador )->value('id');
+
+
+                // buscando si existe el cliente  --  $xmlCDATA->infoFactura->identificacionComprador     '1756925461'
+                $clientefind = DB::table('clientes')->where('identificacion',  $xmlCDATA->infoFactura->identificacionComprador  )
+                    ->where('schemas_id',  $getschemasid )->value('id');
+
+                if($clientefind){
+                  //  echo ' el cliente no es null: ' . '<br>' ;
                 }
                 else{
-                   Cliente::create([
-                        'id' => 2,
+                    $clienteInstance = new Cliente();
+                    $clienteInstance->identificacion = $xmlCDATA->infoFactura->identificacionComprador ;
+                    $clienteInstance->razonSocial = $xmlCDATA->infoFactura->razonSocialComprador ;
+                    $clienteInstance->direccion = $direccionCliente ;
+                    $clienteInstance->correoElectronico = $emailCliente ;
+                    $clienteInstance->habilitado = true;
+                    $clienteInstance->tipo_identificacion_id = $getTipoIdentificacionsid;
+                    $clienteInstance->schemas_id = $getschemasid ;
+                    $clienteInstance->save();
+
+                   /*Cliente::create([
+                        // 'id' => 1,
                         'identificacion' => $xmlCDATA->infoFactura->identificacionComprador ,
                         'razonSocial' => $xmlCDATA->infoFactura->razonSocialComprador ,
-                        'direccion' => 'direccion',
-                        'correoElectronico' => 'news@gmail.com' ,
+                        'direccion' => $direccionCliente ,
+                        'correoElectronico' => $emailCliente ,
                         'habilitado' => true,
-                        'tipo_identificacion_id' => 2,
-                        'schemas_id' => $temp ,
-                    ])->save();
+                        'tipo_identificacion_id' => $getTipoIdentificacionsid ,
+                        'schemas_id' => $getschemasid ,
+                    ])->save();*/
 
-                   // echo 'cliente creado: ' ;
+                    $clientefind = $clienteInstance->id;
+
                 }
 
-            }*/
+                // crear usuario
+                $userfind = DB::table('users')->where('username',  $xmlCDATA->infoFactura->identificacionComprador )->value('id');
+                if( $userfind ) {
+                   // echo ' existe el usuario ' . '<br>' ;
+                }
+                else{
+
+                    $tempRazonSocial = (string) $xmlCDATA->infoFactura->razonSocialComprador ;
+                    $arr1 = explode(" ", $tempRazonSocial );
+                    $arraySize = count($arr1);
+
+                    if( $arraySize == 4 ){
+                        $nametemp =  $arr1[0] . ' ' . $arr1[1];
+                        $apellidoUno = $arr1[2] ;
+                        $apellidoDos = $arr1[3] ;
+                    }
+                    else{
+                        $nametemp =  $arr1[0];
+                        $apellidoUno = $arr1[1] ;
+                        $apellidoDos = $arr1[2] ;
+                    }
+
+                    User::create([
+                        // 'id' => 1,
+                        'username' => $xmlCDATA->infoFactura->identificacionComprador ,
+                        'password' => bcrypt($xmlCDATA->infoFactura->identificacionComprador),
+                        'name' =>  $nametemp ,
+                        'primerApellido' => $apellidoUno ,
+                        'direccion' => $direccionCliente ,
+                        'email' => $emailCliente ,
+                    ])->save();
+                }
+
+                $cabeceraInstance = new Cabecera();
+                $cabeceraInstance->autorizado = true ;
+                $cabeceraInstance->autorizo = $xmls->numeroAutorizacion;
+                $cabeceraInstance->fechaAutorizo = $fromateada;
+
+                // ---- infoTributaria ----
+                $cabeceraInstance->tipoAmbienteCodigo = $xmlCDATA->infoTributaria->ambiente ;           // nn
+                $cabeceraInstance->tipoEmisionCodigo = $xmlCDATA->infoTributaria->tipoEmision ;
+                $cabeceraInstance->razonSocialCliente =  $xmlCDATA->infoTributaria->razonSocial;        // nn
+                // ruc  para verificar con schemas
+                $cabeceraInstance->schemas_id = $getschemasid;
+                $cabeceraInstance->claveAcceso = $xmlCDATA->infoTributaria->claveAcceso  ;
+                $cabeceraInstance->tipoDocumentoCodigo = $xmlCDATA->infoTributaria->codDoc   ;          // nn
+                $cabeceraInstance->establecimientoCodigo = $xmlCDATA->infoTributaria->estab ;           // nn
+                $cabeceraInstance->puntoEmisionCodigo = $xmlCDATA->infoTributaria->ptoEmi ;             // nn
+                $cabeceraInstance->comprobante = $xmlCDATA->infoTributaria->secuencial ;                // nn
+                $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoTributaria->dirMatriz ;
 
 
-            $cabeceraInstance = new Cabecera();
-            $cabeceraInstance->autorizado = true ;
-            $cabeceraInstance->autorizo = $xmls->numeroAutorizacion;
-            $cabeceraInstance->fechaAutorizo = $fromateada;
+                if( $xmlCDATA->infoTributaria->codDoc == '01' ){
+                    //echo 'es documento factura' ;
+                }
 
-            // ---- infoTributaria ----
-            $cabeceraInstance->tipoAmbienteCodigo = $xmlCDATA->infoTributaria->ambiente ;           // nn
-            $cabeceraInstance->tipoEmisionCodigo = $xmlCDATA->infoTributaria->tipoEmision ;
-            $cabeceraInstance->razonSocialCliente =  $xmlCDATA->infoTributaria->razonSocial;        // nn
-            // ruc  para verificar con schemas
-            $cabeceraInstance->claveAcceso = $xmlCDATA->infoTributaria->claveAcceso  ;
-            $cabeceraInstance->tipoDocumentoCodigo = $xmlCDATA->infoTributaria->codDoc   ;          // nn
-            $cabeceraInstance->establecimientoCodigo = $xmlCDATA->infoTributaria->estab ;           // nn
-            $cabeceraInstance->puntoEmisionCodigo = $xmlCDATA->infoTributaria->ptoEmi ;             // nn
-            $cabeceraInstance->comprobante = $xmlCDATA->infoTributaria->secuencial ;                // nn
-            $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoTributaria->dirMatriz ;
+                $cabeceraInstance->fechaEmision = $xmlCDATA->infoFactura->fechaEmision ;
+                $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoFactura->dirEstablecimiento ;
+                // obligadoContabilidad
+                $cabeceraInstance->tipoIdentificacionClienteCodigo = $xmlCDATA->infoFactura->tipoIdentificacionComprador ;
+                $cabeceraInstance->razonSocialCliente = $xmlCDATA->infoFactura->razonSocialComprador ;
+                $cabeceraInstance->identificacionCliente = $xmlCDATA->infoFactura->identificacionComprador ;
+                $cabeceraInstance->valorBase =  $xmlCDATA->infoFactura->totalSinImpuestos ;
+                $cabeceraInstance->descuento =  $xmlCDATA->infoFactura->totalDescuento ;
+                $cabeceraInstance->valorTotal =  $xmlCDATA->infoFactura->importeTotal ;
+                $cabeceraInstance->tipo_documento_id = $tipoDocumentoInstanceId ;      // nn
+                $cabeceraInstance->cliente_id = $clientefind  ;                // nn
+                $cabeceraInstance->direccionCliente = $emailCliente ;                      // nn
+                // tipo_ambientes
+                $cabeceraInstance->tipo_ambiente_id = $getTipoAmbienteid ;                               // nn
+                $cabeceraInstance->tipo_emision_id = $getTipoEmisionsid ;                              // nn
+                $cabeceraInstance->seleccionado = true;
 
+                $cabeceraInstance->xml = $filesystem->get($fils) ;
+                $cabeceraInstance->save();
 
-            if( $xmlCDATA->infoTributaria->codDoc == '01' ){
-                //echo 'es documento factura' ;
+                //Detalles --- Facturas   --- verificar  if( $xmlCDATA->infoTributaria->codDoc == '01' )
+                foreach ($xmlCDATA->detalles->detalle as $detail) {
+                    $cabeceraDetalleInstance = new CabeceraDetalle();
+                    $cabeceraDetalleInstance->codigoProducto = $detail->codigoPrincipal ;
+                    $cabeceraDetalleInstance->descripcion = $detail->descripcion ;
+                    $cabeceraDetalleInstance->cantidad = $detail->cantidad ;
+                    $cabeceraDetalleInstance->precio = $detail->precioUnitario;
+                    $cabeceraDetalleInstance->descuento = $detail->descuento;
+                    $cabeceraDetalleInstance->valorBase = $detail->precioTotalSinImpuesto;
+                    $cabeceraDetalleInstance->cabeceras_id = $cabeceraInstance->id ;
+                    $cabeceraDetalleInstance->save();
+                }
+
+                foreach ($xmlCDATA->infoAdicional->campoAdicional as $campos) {
+                    DocumentoAdicional::create([
+                        'nombre' => $campos->attributes() ,
+                        'descripcion' => $campos ,
+                        'cabeceras_id' => $cabeceraInstance->id ,
+                    ])->save();
+                }
+
+                try{
+                    // $filesystem->delete($fils) ;
+                }catch (FileNotFoundException $e ){
+                    echo ' FileNotFoundException ' . $e ;
+                }
             }
-
-            $cabeceraInstance->fechaEmision = $xmlCDATA->infoFactura->fechaEmision ;
-            $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoFactura->dirEstablecimiento ;
-            // obligadoContabilidad
-            $cabeceraInstance->tipoIdentificacionClienteCodigo = $xmlCDATA->infoFactura->tipoIdentificacionComprador ;
-            $cabeceraInstance->razonSocialCliente = $xmlCDATA->infoFactura->razonSocialComprador ;
-            $cabeceraInstance->identificacionCliente = $xmlCDATA->infoFactura->identificacionComprador ;
-            $cabeceraInstance->valorBase =  $xmlCDATA->infoFactura->totalSinImpuestos ;
-            $cabeceraInstance->descuento =  $xmlCDATA->infoFactura->totalDescuento ;
-            $cabeceraInstance->valorTotal =  $xmlCDATA->infoFactura->importeTotal ;
-            $cabeceraInstance->tipo_documento_id = $tipoDocumentoInstance->id;      // nn
-            $cabeceraInstance->cliente_id = $clienteInstance->id  ;                // nn
-            $cabeceraInstance->direccionCliente = 'direccion';                      // nn
-            // tipo_ambientes
-            $cabeceraInstance->tipo_ambiente_id = 1 ;                               // nn
-            $cabeceraInstance->tipo_emision_id = 1;                              // nn
-            $cabeceraInstance->seleccionado = true;
-
-            $cabeceraInstance->xml = $filesystem->get($fils) ;
-
-            $cabeceraInstance->save();
-
-
-
-            //Detalles --- Facturas   --- verificar  if( $xmlCDATA->infoTributaria->codDoc == '01' )
-            foreach ($xmlCDATA->detalles->detalle as $detail) {
-                $cabeceraDetalleInstance = new CabeceraDetalle();
-                $cabeceraDetalleInstance->codigoProducto = $detail->codigoPrincipal ;
-                $cabeceraDetalleInstance->descripcion = $detail->descripcion ;
-                $cabeceraDetalleInstance->cantidad = $detail->cantidad ;
-                $cabeceraDetalleInstance->precio = $detail->precioUnitario;
-                $cabeceraDetalleInstance->descuento = $detail->descuento;
-                $cabeceraDetalleInstance->valorBase = $detail->precioTotalSinImpuesto;
-                $cabeceraDetalleInstance->cabeceras_id = $cabeceraInstance->id ;
-                $cabeceraDetalleInstance->save();
-            }
-
- 
-
-            try{
-                $filesystem->delete($fils) ;
-            }catch (FileNotFoundException $e ){
-                echo ' FileNotFoundException ' . $e ;
-            }
-
         }
-
+        else{
+           // echo ' este usuario no tiene esquema.... ';
+        }
 
         return redirect('/documentos');
     }
+
+
 
 
    /* public function download($id){
@@ -246,20 +334,5 @@ class CabeceraController extends Controller
     }*/
 
 
-    private static function headers($filename, $now)
-    {
-        header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
-        header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
-        header("Last-Modified: {$now} GMT");
-
-        // force download
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
-
-        // disposition / encoding on response body
-        header("Content-Disposition: attachment;filename={$filename}");
-        header("Content-Transfer-Encoding: binary");
-    }
 
 }

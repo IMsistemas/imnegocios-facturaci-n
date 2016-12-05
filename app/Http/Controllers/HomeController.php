@@ -62,9 +62,11 @@ class HomeController extends Controller
         $cabeceraInstance = Cabecera::find($id);
         $name = $cabeceraInstance->claveAcceso;
         $data = [];
-
         $pdf = \PDF::loadView('pdfview', $data );
-        return $pdf->download( '' . $name . '.pdf');
+
+        // http://imfa.es/imfa/logo-ludoteca.png
+        return view('pdfview');
+        //return $pdf->download( '' . $name . '.pdf');
     }
 
 
