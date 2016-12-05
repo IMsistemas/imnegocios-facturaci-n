@@ -302,7 +302,7 @@ class CabeceraController extends Controller
                 }
 
                 try{
-                    // $filesystem->delete($fils) ;
+                     $filesystem->delete($fils) ;
                 }catch (FileNotFoundException $e ){
                     echo ' FileNotFoundException ' . $e ;
                 }
