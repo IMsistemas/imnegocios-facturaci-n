@@ -93,7 +93,7 @@
             <div class="col-md-6">
 
                 <div class="receipt-logo">
-                    <img src="http://imfa.es/imfa/logo-ludoteca.png" id="issuer_logo" class="header"/>
+                    <img src="/home/imfacturacion/tmp/imagen/logo-ludoteca.png" id="issuer_logo" class="header"/>
                 </div>
 
             </div>
