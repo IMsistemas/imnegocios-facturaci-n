@@ -6,6 +6,7 @@ use Barryvdh\DomPDF\PDF;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use imfa\Http\Requests;
 
 use imfa\Modelos\Documento\Cabecera;
@@ -38,15 +39,22 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function upXML()
+    {
+        return view('upfiles');
+    }
+
+    public function saveUpXml( Request $request ){
+
+        $file = $request->file('file');
+        $nombre = $file->getClientOriginalName();
+        Storage::disk('ftpUp')->put($nombre,  \File::get($file));
+
+        return redirect('/documentos');
+    }
+
 
     public function downloads($id){
-
-     /*   $cabeceraInstance = Cabecera::find($id);
-        $type = 'Content-type: text/xml' ;
-        $file= $cabeceraInstance->xml ;
-        header('Content-type: text/xml');
-        header('Content-Disposition: attachment; filename="textxmmmmml.xml"');*/
-
         $cabeceraInstance = Cabecera::find($id);
         $name = $cabeceraInstance->claveAcceso;
         $xml= $cabeceraInstance->xml ;

@@ -48,7 +48,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                    <img src="/imne.jpeg" style="height: 85px;">
+                    <img src="http://imfa.es/imfa/logo-ludoteca.png" style="height: 65px; margin-top: -15px;">
                 </a>
             </div>
 
@@ -72,6 +72,7 @@
                                 <li><a href="{{ url('/establecimiento') }}">Listado Establecimiento</a></li>
                                 <li><a href="{{ url('/establecimiento/create') }}">Crear Establecimiento</a></li>
                                 <li><a href="{{ url('/documentos') }}">Listado documentos</a></li>
+                                <li><a href="{{ url('/upXml') }}">Cargar XMLs</a></li>
                                 <li><a href="{{ url('/ftp') }}">Importar ftp</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Salir</a></li>
                             </ul>

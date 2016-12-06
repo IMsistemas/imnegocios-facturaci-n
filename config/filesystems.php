@@ -80,6 +80,24 @@ return [
             // 'timeout'  => 30,
         ],
 
+        'ftpUp' => [
+            'driver'   => 'ftp',
+            'host'     => '144.208.65.224',
+            'username' => 'imfacturacion',
+            'password' => 'EysK1i6E',
+            'port'     => 21,
+            'passive'  => true,
+            'root'     => '/archivo_xml/XML',
+
+
+            // Optional FTP Settings...
+            // 'port'     => 21,
+            // 'root'     => '',
+            // 'passive'  => true,
+            // 'ssl'      => true,
+            // 'timeout'  => 30,
+        ],
+
     ],
 
 ];

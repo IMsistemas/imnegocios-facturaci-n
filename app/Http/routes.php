@@ -23,6 +23,9 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+Route::get('/upXml', 'HomeController@upXML');
+Route::post('/saveUpXml', 'HomeController@saveUpXml');
+
 Route::get('/pdfview/{file}', 'HomeController@downPDF');
 Route::get('/filesftp', 'HomeController@ftpfile');
 Route::get('/ftp', 'Documento\CabeceraController@cargaftp');

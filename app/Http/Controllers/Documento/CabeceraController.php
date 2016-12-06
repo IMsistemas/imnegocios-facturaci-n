@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use imfa\Http\Requests;
 use imfa\Http\Controllers\Controller;
 use imfa\Modelos\Documento\Cabecera;
@@ -114,14 +115,10 @@ class CabeceraController extends Controller
 
     public function cargaftp(Filesystem $filesystem){
 
-       // $xml = $filesystem->get('XML/0109201601179218265400120010010000000010000000115.xml') ;
-       // $xmls = new \SimpleXMLElement($xml);
-
         $idusuario = Auth::user()->id;
         $userInstancet = User::find( $idusuario );
 
         if(  strlen(trim($userInstancet->schemaID)) > 2 ){
-
 
             $filesxmls = $filesystem->files('XML') ;
 
@@ -132,19 +129,16 @@ class CabeceraController extends Controller
                 $xmls = new \SimpleXMLElement($xmlx);
                 $xmlCDATA = new \SimpleXMLElement($xmls->comprobante);
 
-
                 $fecha_actual = date('Y-m-d');
                 $date = new \DateTime($xmls->fechaAutorizacion);
                 $fromateada = $date->format('Y-d-m H:i:s');
 
-
-
                 $direccionCliente = '';
                 $emailCliente = '';
 
+
                 foreach ($xmlCDATA->infoAdicional->campoAdicional as $campos) {
                     // echo ' --- campos --- : ' . $campos->attributes()  . '<br>' ;
-                    // echo ' valor: ' . $campos  . '<br>' ;
 
                     if( $campos->attributes() == 'Direccion' ){
                         $direccionCliente =  $campos ;
@@ -189,17 +183,6 @@ class CabeceraController extends Controller
                     $clienteInstance->schemas_id = $getschemasid ;
                     $clienteInstance->save();
 
-                   /*Cliente::create([
-                        // 'id' => 1,
-                        'identificacion' => $xmlCDATA->infoFactura->identificacionComprador ,
-                        'razonSocial' => $xmlCDATA->infoFactura->razonSocialComprador ,
-                        'direccion' => $direccionCliente ,
-                        'correoElectronico' => $emailCliente ,
-                        'habilitado' => true,
-                        'tipo_identificacion_id' => $getTipoIdentificacionsid ,
-                        'schemas_id' => $getschemasid ,
-                    ])->save();*/
-
                     $clientefind = $clienteInstance->id;
 
                 }
@@ -220,10 +203,14 @@ class CabeceraController extends Controller
                         $apellidoUno = $arr1[2] ;
                         $apellidoDos = $arr1[3] ;
                     }
-                    else{
+                    elseif( $arraySize == 3 ){
                         $nametemp =  $arr1[0];
                         $apellidoUno = $arr1[1] ;
                         $apellidoDos = $arr1[2] ;
+                    }
+                    else{
+                        $nametemp =  $arr1[0];
+                        $apellidoUno = $arr1[1] ;
                     }
 
                     User::create([
@@ -302,7 +289,12 @@ class CabeceraController extends Controller
                 }
 
                 try{
-                     $filesystem->delete($fils) ;
+                     //$filesystem->delete($fils) ;
+
+                    $temp = $fils ;
+                    $outizq = strstr($temp, "/", false);
+                    Storage::move( $fils , 'XMLTMP' . $outizq  );
+
                 }catch (FileNotFoundException $e ){
                     echo ' FileNotFoundException ' . $e ;
                 }
