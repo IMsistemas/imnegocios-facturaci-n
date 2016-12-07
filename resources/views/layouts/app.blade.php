@@ -74,7 +74,7 @@
                                 <li><a href="{{ url('/establecimiento/create') }}">Crear Establecimiento</a></li>
                                 <li><a href="{{ url('/documentos') }}">Listado documentos</a></li>
                                 <li><a href="{{ url('/upXml') }}">Cargar XMLs</a></li>
-                                <li><a href="{{ url('/ftp') }}">Importar ftp</a></li>
+                                <li><a href="{{ url('/ftp') }}">Desplegar xml</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Salir</a></li>
                             </ul>
                         </li>
