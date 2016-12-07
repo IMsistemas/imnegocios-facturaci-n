@@ -117,15 +117,15 @@ class HomeController extends Controller
         $data = [ 'razonSocialCliente' => $cabeceraInstance->razonSocialCliente , ];
 
 
-      //  $pdf = \PDF::loadView('pdfview', [ 'cabeceraInstance' => $cabeceraInstance ] );
+       $pdf = \PDF::loadView('pdfview', [ 'cabeceraInstance' => $cabeceraInstance ] );
 
-        $view =  \View::make('pdfview1', compact('data'))->render();
+        /*$view =  \View::make('pdfview1', compact('data'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
-        return $pdf->stream('pdfview1');
+        return $pdf->stream('pdfview1');*/
 
         // http://imfa.es/imfa/logo-ludoteca.png
-        //return view('pdfview');
+        return view('pdfview');
         //return $pdf->download( '' . $name . '.pdf');
     }
 
