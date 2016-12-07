@@ -129,9 +129,18 @@ class CabeceraController extends Controller
                 $xmls = new \SimpleXMLElement($xmlx);
                 $xmlCDATA = new \SimpleXMLElement($xmls->comprobante);
 
-                $fecha_actual = date('Y-m-d');
-                $date = new \DateTime($xmls->fechaAutorizacion);
-                $fromateada = $date->format('Y-d-m H:i:s');
+
+                $date_array = explode(" ", (string) $xmls->fechaAutorizacion );
+                $datefechaAutorizacion = $date_array[0] ;
+
+                //$date = '25/05/2010 11:14:44.000';
+                $date = str_replace('/', '-', $datefechaAutorizacion );
+                $temDate = date('Y-m-d', strtotime($date)) ;
+                //echo date('Y-m-d', strtotime($date)) . '<br>' ;
+
+               /* $fecha_actual = date('Y-m-d');
+                $date =  new \DateTime( '2016/10/28'  );  // (string) $xmls->fechaAutorizacion ;   // new \DateTime( '13/10/2016'  );
+                $fromateada = $date->format('Y-m-d H:i:s');*/
 
                 $direccionCliente = '';
                 $emailCliente = '';
@@ -227,7 +236,8 @@ class CabeceraController extends Controller
                 $cabeceraInstance = new Cabecera();
                 $cabeceraInstance->autorizado = true ;
                 $cabeceraInstance->autorizo = $xmls->numeroAutorizacion;
-                $cabeceraInstance->fechaAutorizo = $fromateada;
+                $cabeceraInstance->fechaAutorizo =  $temDate   ;     //$fromateada;   $xmls->fechaAutorizacion
+
 
                 // ---- infoTributaria ----
                 $cabeceraInstance->tipoAmbienteCodigo = $xmlCDATA->infoTributaria->ambiente ;           // nn
@@ -247,7 +257,7 @@ class CabeceraController extends Controller
                     //echo 'es documento factura' ;
                 }
 
-                $cabeceraInstance->fechaEmision = $xmlCDATA->infoFactura->fechaEmision ;
+                $cabeceraInstance->fechaEmision = $temDate ; //$xmlCDATA->infoFactura->fechaEmision ;
                 $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoFactura->dirEstablecimiento ;
                 // obligadoContabilidad
                 $cabeceraInstance->tipoIdentificacionClienteCodigo = $xmlCDATA->infoFactura->tipoIdentificacionComprador ;
@@ -306,24 +316,6 @@ class CabeceraController extends Controller
 
         return redirect('/documentos');
     }
-
-
-
-
-   /* public function download($id){
-        echo ' id: ' . $id ;
-
-        $cabeceraInstance = Cabecera::find($id);
-
-       // echo ' $cabeceraInstance: ' . $cabeceraInstance->xml;
-
-        $file= $cabeceraInstance->xml ;
-        header('Content-type: text/xml');
-        header('Content-Disposition: attachment; filename="textxmmmmml.xml"');
-        echo $file ;
-
-       // return $xml->asXML();
-    }*/
 
 
 

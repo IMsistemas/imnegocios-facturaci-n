@@ -14,6 +14,11 @@ use imfa\Modelos\Documento\CabeceraDetalle;
 use imfa\Modelos\Nomencladores\Cliente;
 use imfa\Modelos\Nomencladores\TipoDocumento;
 
+use Input;
+use Validator;
+use Redirect;
+use Session;
+
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 
@@ -46,11 +51,51 @@ class HomeController extends Controller
 
     public function saveUpXml( Request $request ){
 
-        $file = $request->file('file');
-        $nombre = $file->getClientOriginalName();
-        Storage::disk('ftpUp')->put($nombre,  \File::get($file));
+       // $file = $request->file('file');
 
-        return redirect('/documentos');
+        $files = $request->file('images');
+        // Making counting of uploaded images
+        $file_count = count($files);
+        // start count how many uploaded
+        $uploadcount = 0;
+
+       foreach($files as $file) {
+           $rules = array('file' => 'required|mimes:png,xml'); //'required|mimes:png,gif,jpeg,txt,pdf,doc'
+           $validator = Validator::make(array('file'=> $file), $rules);
+
+
+           if($validator->passes()){
+              //  $destinationPath = 'uploads';
+                $filename = $file->getClientOriginalName();
+              //  $upload_success = $file->move($destinationPath, $filename);
+
+                Storage::disk('ftpUp')->put($filename,  \File::get($file));
+
+                $uploadcount ++;
+            }
+        }
+
+        if($uploadcount == $file_count){
+            Session::flash('success', 'Carga exitosa!!');
+            return Redirect::to('upXml');
+        }
+        else {
+            Session::flash('message', 'Perdón, solo se permiten archivos xml!');
+            return Redirect::to('upXml');
+        }
+
+
+
+       /* if( $file->getClientOriginalExtension() == 'XML' || $file->getClientOriginalExtension() == 'xml' ){
+            $filename = $file->getClientOriginalName();
+            Storage::disk('ftpUp')->put($filename,  \File::get($file));
+            $uploadcount ++;
+        }*/
+
+        /*$nombre = $file->getClientOriginalName();
+        Storage::disk('ftpUp')->put($nombre,  \File::get($file));*/
+
+       // return redirect('/documentos');
     }
 
 
@@ -69,11 +114,18 @@ class HomeController extends Controller
     public function downPDF($id){
         $cabeceraInstance = Cabecera::find($id);
         $name = $cabeceraInstance->claveAcceso;
-        $data = [];
-        $pdf = \PDF::loadView('pdfview', $data );
+        $data = [ 'razonSocialCliente' => $cabeceraInstance->razonSocialCliente , ];
+
+
+      //  $pdf = \PDF::loadView('pdfview', [ 'cabeceraInstance' => $cabeceraInstance ] );
+
+        $view =  \View::make('pdfview1', compact('data'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
+        return $pdf->stream('pdfview1');
 
         // http://imfa.es/imfa/logo-ludoteca.png
-        return view('pdfview');
+        //return view('pdfview');
         //return $pdf->download( '' . $name . '.pdf');
     }
 
@@ -99,43 +151,15 @@ class HomeController extends Controller
 
 
             try{
-                $filesystem->delete($fils) ;
+              //  $filesystem->delete($fils) ;
             }catch (FileNotFoundException $e ){
                 echo ' FileNotFoundException ' . $e ;
             }
 
         }
 
-
-     /*   $xml = $filesystem->get('XML/0109201601179218265400120010010000000010000000115.xml') ;
-        $xmls = new \SimpleXMLElement($xml);
-
-        echo ' ---- $xml_object: '. $xmls->estado ;
-
-        $xmlcomprobante = new \SimpleXMLElement($xmls->comprobante);
-        echo ' $xmlcomprobante razonSocial: ' . $xmlcomprobante->infoTributaria->razonSocial;
-
-        foreach ($xmlcomprobante->detalles->detalle as $detail) {
-            echo ' __detalle precioTotalSinImpuesto = ', $detail->precioTotalSinImpuesto;
-        }
-
-        echo ' campoAdicional[0]: ' . $xmlcomprobante->infoAdicional->campoAdicional[0];*/
-
-        //dd($xmlcomprobante)   ;
-
-
-        // solo para xml tipo facturas, no autorizados
-        /*$factura = $filesystem->get('imfacturacion.com/public/factura.xml');
-        $facturas = new \SimpleXMLElement($factura);
-        echo '  _codigo documento: ' . $facturas->infoTributaria->codDoc . '  ';*/
-
-
-
-       // return  $xmls->estado ;
-
         return 'holaaaa ftpfile';
     }
-
 
 
 }

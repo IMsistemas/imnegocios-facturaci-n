@@ -48,7 +48,8 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                    <img src="http://imfa.es/imfa/logo-ludoteca.png" style="height: 65px; margin-top: -15px;">
+                    <img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png" style="height: 65px; margin-top: -15px;">
+
                 </a>
             </div>
 

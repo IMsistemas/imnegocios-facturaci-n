@@ -93,7 +93,8 @@
             <div class="col-md-6">
 
                 <div class="receipt-logo">
-                    <img src="/home/imfacturacion/tmp/imagen/logo-ludoteca.png" id="issuer_logo" class="header"/>
+                    <img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png" class="img-responsive" />
+                    {{--<img src="http://imfa.es/imfa/logo-ludoteca.png" class="img-responsive"/>--}}
                 </div>
 
             </div>
@@ -192,7 +193,21 @@
                         <span>Clave de acceso:</span>
                     </div>
                     <div class="col-md-9 col-sm-6">
-                        2210201601099213554900120010020000530471994157715
+                        {{--2210201601099213554900120010020000530471994157715--}}
+
+                        <div>
+                            {{--<img src="http://imfa.es/imfa/barcode.png" class="img-responsive" height="50"/>--}}
+
+                            <table>
+                                <tr>
+                                    <td>
+                                        <img src='http://barcode.tec-it.com/barcode.ashx?data=0710201601179218265400120010010000007980000079919&code=Code128&dpi=96' />
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
