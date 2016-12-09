@@ -93,8 +93,8 @@
             <div class="col-md-6">
 
                 <div class="receipt-logo">
-                    <img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png" class="img-responsive" />
-                    {{--<img src="http://imfa.es/imfa/logo-ludoteca.png" class="img-responsive"/>--}}
+                    {{--<img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png" class="img-responsive" />--}}
+                    <img src="http://imfa.es/imfa/logo-ludoteca.png" class="img-responsive"/>
                 </div>
 
             </div>

@@ -33,13 +33,14 @@
 
     <div class="col-xs-6">
         <div style="height: 182px">
-            <img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png" class="img-responsive"/>
+            {{--<img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png" class="img-responsive"/>--}}
+            <img src="https://imfacturacion.com/imfa/logo-ludoteca.png" class="img-responsive"/>
         </div>
 
         <div style="border: 1px solid black;height: 187px">
-            <h4> LUDOTECA SCC</h4>
+            <h4> {{ $data['razonSocial']  }} </h4>
             <br>
-            <span> LUDOTECA SCC</span>
+            <span> {{ $data['razonSocial']  }} </span>
             <br>
 
             <div class="row">
@@ -47,7 +48,7 @@
                     Dirección Matriz:
                 </div>
                 <div class="col-xs-8">
-                    AV SIMON BOLIVAR SN
+                    {{ $data['direccionMatriz']  }}
                 </div>
             </div>
             <div class="row">
@@ -55,7 +56,7 @@
                     Dirección Sucursal:
                 </div>
                 <div class="col-xs-8">
-                    AV SIMON BOLIVAR SN
+                    {{ $data['direccionMatriz']  }}
                 </div>
             </div>
             <div class="row">
@@ -70,7 +71,7 @@
     </div>
 
     <div class="col-xs-6" style="border: 1px solid black; height: 370px">
-        <h4>R.U.C.: 1792182654001</h4>
+        <h4>R.U.C.: {{ $data['ruc']  }}</h4>
 
         <h3>FACTURA</h3>
 
@@ -79,22 +80,22 @@
                 FECHA Y HORA DE AUTORIZACIÓN
             </div>
             <div class="col-xs-6" style="padding-left: 0;padding-right: 0;">
-                07/10/2016 12:55:49.000
+                {{$data['fechaAutorizo']}} 12:55:49.000
             </div>
         </div>
 
-        <p><strong>No.</strong> 001-001-000000798</p>
+        <p><strong>No.</strong> {{ $data['comprobante'] }} </p>
 
         <p>NÚMERO DE AUTORIZACIÓN</p>
 
-        <p>0710201612554917921826540011184871039</p>
+        <p> {{ $data['autorizo'] }} </p>
 
         <div class="row">
             <div class="col-xs-6" style="padding-left: 0;padding-right: 0;">
                 <p>AMBIENTE</p>
             </div>
             <div class="col-xs-6" style="padding-left: 0;padding-right: 0;">
-                <p>PRODUCCION</p>
+                <p> {{ $data['tipoAmbiente']  }} </p>
             </div>
         </div>
 
@@ -103,7 +104,7 @@
                 <p>EMISION</p>
             </div>
             <div class="col-xs-6" style="padding-left: 0;padding-right: 0;">
-                <p>NORMAL</p>
+                <p> {{ $data['tipoEmisions']  }} </p>
             </div>
         </div>
         <p>CLAVE DE ACCESO</p>
@@ -114,7 +115,7 @@
             <table>
                 <tr>
                     <td>
-                        <img src='http://barcode.tec-it.com/barcode.ashx?data=0710201601179218265400120010010000007980000079919&code=Code128&dpi=96' />
+                        <img src='http://barcode.tec-it.com/barcode.ashx?data=  {{ $data['claveAcceso'] }} &code=Code128&dpi=96' />
                     </td>
                 </tr>
             </table>
@@ -132,13 +133,13 @@
             <p>Razón Social / Nombres y Apellidos:</p>
         </div>
         <div class="col-xs-3" style="padding-left: 0;padding-right: 0;">
-            <p>GUERRERO CRESPO VICTOR</p>
+            <p> {{$data['razonSocialCliente']}} </p>
         </div>
         <div class="col-xs-3" style="padding-left: 0;padding-right: 0;">
             <p>Identificación:</p>
         </div>
         <div class="col-xs-3" style="padding-left: 0;padding-right: 0;">
-            <p>0956790661</p>
+            <p> {{$data['identificacionCliente']}} </p>
         </div>
     </div>
     <div class="row">
@@ -146,7 +147,7 @@
             <p>Fecha Emisión:</p>
         </div>
         <div class="col-xs-3" style="padding-left: 0;padding-right: 0;">
-            <p>07/10/2016</p>
+            <p> {{$data['fechaEmision']}}  </p>
         </div>
         <div class="col-xs-3" style="padding-left: 0;padding-right: 0;">
             <p>Guía Remisión:</p>
@@ -192,44 +193,57 @@
                 Precio Total
             </td>
         </tr>
+
+        @foreach(  $data['detalleCabecera'] as $dc  )
         <tr>
-            <td>1001</td>
+
+
+            <td>    {{ $dc->codigoProducto }} </td>
             <td></td>
-            <td>1</td>
-            <td>GASTO ADMINISTRATIVO</td>
+            <td> {{ $dc->cantidad }} </td>
+            <td>  {{ $dc->descripcion }} </td>
             <td></td>
             <td></td>
             <td></td>
-            <td>100</td>
+            <td> {{ $dc->precio }} </td>
             <td>0.00</td>
             <td>0.00</td>
-            <td>0</td>
-            <td>100</td>
+            <td> {{ $dc->descuento }} </td>
+            <td> {{ $dc->precio }} </td>
+
+
         </tr>
+        @endforeach
+
     </table>
 </div>
 <br>
+
 
 <div class="row">
 
     <div class="col-xs-8">
         <div style="border: 1px solid black;">
+
             <p>INFORMACION ADICIONAL</p>
+
 
             <div class="row">
                 <div class="col-xs-3" style="padding-left: 0;padding-right: 0;">
-                    <p>Direccion</p>
+                    <p> Dirección </p>
                 </div>
                 <div class="col-xs-9" style="padding-left: 0;padding-right: 0;">
-                    <p>AV ALONSO DE TORRES Y CALLE BECK ROLLO</p>
+                    <p> {{ $data['direccion']  }} </p>
                 </div>
             </div>
+
+
             <div class="row">
                 <div class="col-xs-3" style="padding-left: 0;padding-right: 0;">
                     <p>Teléfono</p>
                 </div>
                 <div class="col-xs-9" style="padding-left: 0;padding-right: 0;">
-                    <p>4503884</p>
+                    <p> {{ $data['telefono']  }} </p>
                 </div>
             </div>
             <div class="row">
@@ -237,7 +251,7 @@
                     <p>Email</p>
                 </div>
                 <div class="col-xs-9" style="padding-left: 0;padding-right: 0;">
-                    <p>usuario@dominio.com</p>
+                    <p> {{ $data['email']  }} </p>
                 </div>
             </div>
             <div class="row">
@@ -245,7 +259,7 @@
                     <p>Alumno</p>
                 </div>
                 <div class="col-xs-9" style="padding-left: 0;padding-right: 0;">
-                    <p>GUERRERO RATTO DANIEL</p>
+                    <p> {{ $data['alumno']  }} </p>
                 </div>
             </div>
             <div class="row">
@@ -253,9 +267,11 @@
                     <p>BASICA</p>
                 </div>
                 <div class="col-xs-9" style="padding-left: 0;padding-right: 0;">
-                    <p>2DO BASICA</p>
+                    <p> {{ $data['basica']  }} </p>
                 </div>
             </div>
+
+
         </div>
     </div>
 
@@ -264,7 +280,7 @@
             <table class="table table-bordered table-responsive table-condensed" >
                 <tr>
                     <td>SUBTOTAL 14%</td>
-                    <td>0</td>
+                    <td> {{ $data['valorBase'] }} </td>
                 </tr>
                 <tr>
                     <td>SUBTOTAL 0%</td>
@@ -284,7 +300,7 @@
                 </tr>
                 <tr>
                     <td>TOTAL Descuento</td>
-                    <td>0</td>
+                    <td> {{ $data['descuentoTotal'] }} </td>
                 </tr>
                 <tr>
                     <td>ICE</td>
@@ -304,7 +320,7 @@
                 </tr>
                 <tr>
                     <td>VALOR TOTAL</td>
-                    <td>100</td>
+                    <td> {{ $data['valorTotal'] }} </td>
                 </tr>
             </table>
         </div>

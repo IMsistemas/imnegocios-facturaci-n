@@ -2,12 +2,14 @@
 
 namespace imfa\Http\Controllers;
 
-use Barryvdh\DomPDF\PDF;
+//use Barryvdh\DomPDF\PDF;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use imfa\Http\Requests;
+use Illuminate\Support\Facades\DB;
 
 use imfa\Modelos\Documento\Cabecera;
 use imfa\Modelos\Documento\CabeceraDetalle;
@@ -18,6 +20,8 @@ use Input;
 use Validator;
 use Redirect;
 use Session;
+
+
 
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
@@ -114,10 +118,8 @@ class HomeController extends Controller
     public function downPDF($id){
         $cabeceraInstance = Cabecera::find($id);
         $name = $cabeceraInstance->claveAcceso;
-        $data = [ 'razonSocialCliente' => $cabeceraInstance->razonSocialCliente , ];
-
-
-       $pdf = \PDF::loadView('pdfview', [ 'cabeceraInstance' => $cabeceraInstance ] );
+      //  $data = [ 'razonSocialCliente' => $cabeceraInstance->razonSocialCliente , ];
+     //  $pdf = \PDF::loadView('pdfview1', [ 'cabeceraInstance' => $cabeceraInstance ] );
 
         /*$view =  \View::make('pdfview1', compact('data'))->render();
         $pdf = \App::make('dompdf.wrapper');
@@ -125,7 +127,91 @@ class HomeController extends Controller
         return $pdf->stream('pdfview1');*/
 
         // http://imfa.es/imfa/logo-ludoteca.png
-        return view('pdfview');
+        // return view('pdfview1');
+
+
+        /*$snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="file.pdf"');
+         echo $snappy->getOutput('http://imfa.es');*/
+
+       $detalleCabecera = DB::table('cabecera_detalles')->where('cabeceras_id',  $cabeceraInstance->id )->get() ;
+       $detalleAdicional = DB::table('documento_adicionals')->where('cabeceras_id',  $cabeceraInstance->id )->get() ;
+
+
+        $getTipoEmisions = DB::table('tipo_emisions')->where('codigo',  $cabeceraInstance->tipoEmisionCodigo )->first();
+
+        // id del esquema al que viene el xml a importado
+        $getTipoAmbiente = DB::table('tipo_ambientes')->where('codigo',  $cabeceraInstance->tipoAmbienteCodigo )->first();
+
+        $getschemas = DB::table('schemas')->where('id',  $cabeceraInstance->schemas_id )
+                                            ->where('tipo_ambiente_id',  DB::table('tipo_ambientes')->where('codigo',  $cabeceraInstance->tipoAmbienteCodigo )->value('id') )->first();
+
+        foreach( $detalleAdicional as $detallad ){
+            if( $detallad->nombre == 'Direccion'  ){
+                $direccion =  $detallad->descripcion ;
+            }
+            if( $detallad->nombre == 'Telefono'  ){
+                $telefono =  $detallad->descripcion ;
+            }
+            if( $detallad->nombre == 'Email'  ){
+                $email =  $detallad->descripcion ;
+            }
+            if( $detallad->nombre == 'Alumno'  ){
+                $alumno =  $detallad->descripcion ;
+            }
+            if( $detallad->nombre == 'BASICA'  ){
+                $basica =  $detallad->descripcion ;
+            }
+        }
+
+
+
+        $data = [
+
+            'ruc' => $getschemas->ruc ,
+            'razonSocial' => $getschemas->razonSocial ,
+            'direccionMatriz' => $getschemas->direccionMatriz ,
+
+            'tipoAmbiente' => $getTipoAmbiente->descripcion ,
+            'tipoEmisions' => $getTipoEmisions->descripcion  ,
+
+            'razonSocialCliente'    => $cabeceraInstance->razonSocialCliente ,
+            'autorizo'              => $cabeceraInstance->autorizo,
+            'fechaAutorizo'         => $cabeceraInstance->fechaAutorizo,
+            'fechaEmision'          => $cabeceraInstance->fechaEmision,
+            'claveAcceso'           => $cabeceraInstance->claveAcceso,
+            'comprobante'           => $cabeceraInstance->establecimientoCodigo .'-'. $cabeceraInstance->puntoEmisionCodigo .'-'. $cabeceraInstance->comprobante,
+            'establecimientoDireccion' => $cabeceraInstance->establecimientoDireccion,
+            'identificacionCliente' => $cabeceraInstance->identificacionCliente,
+
+            // totales
+            'valorTotal' => $cabeceraInstance->valorTotal,
+            'valorBase' => $cabeceraInstance->valorBase,
+            'descuentoTotal' => $cabeceraInstance->descuento ,
+
+            'detalleCabecera' => $detalleCabecera,
+
+            // adicional info
+            'direccion' => $direccion,
+            'telefono' => $telefono,
+            'email' => $email,
+            'alumno' => $alumno,
+            'basica' => $basica,
+
+
+
+
+        ];
+
+        $view =  \View::make('pdfview', compact('data'))->render();
+
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadHTML( $view );
+        return $pdf->inline();
+
+        // http://imfa.es/pdfview1
+
         //return $pdf->download( '' . $name . '.pdf');
     }
 

@@ -9,6 +9,7 @@ return array(
     'Svg\\' => array($vendorDir . '/phenx/php-svg-lib/src'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
+    'Knp\\Snappy' => array($vendorDir . '/knplabs/knp-snappy/src'),
     'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
     'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
     'FontLib\\' => array($vendorDir . '/phenx/php-font-lib/src'),

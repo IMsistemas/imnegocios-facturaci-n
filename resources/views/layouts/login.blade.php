@@ -99,7 +99,7 @@
 
     <div class="footer">
         <div style="width: 150px;margin: 0 auto;">
-             <img src="https://www.imfacturacion.com/imfa/imnegocios.png" style="height: 45px;">
+             <img src="https://imfacturacion.com/imfa/imnegocios.png" style="height: 45px;">
         </div>
     </div>
     <!-- JavaScripts    -->
