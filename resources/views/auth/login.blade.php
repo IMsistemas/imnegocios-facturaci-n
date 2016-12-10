@@ -5,10 +5,10 @@
 
     <div class="row">
         <div class="col-md-8 col-md-offset-4 col-xs-offset-2">
-            <img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png">
+            <img src="https://www.imfacturacion.com/ludoteca/imfa/logo-ludoteca.png">
         </div>
         <div class="col-md-8 col-md-offset-5 col-xs-offset-2">
-            <img src="https://www.imfacturacion.com/imfa/user-name.png">
+            <img src="https://www.imfacturacion.com/ludoteca/imfa/user-name.png">
         </div>
         <div class="col-md-8 col-md-offset-4 col-xs-offset-2">
              <h3>INICIO DE SESIÓN</h3>

@@ -3,7 +3,6 @@
 namespace imfa\Http\Controllers;
 
 //use Barryvdh\DomPDF\PDF;
-use Knp\Snappy\Pdf;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Response;
@@ -196,25 +195,14 @@ class HomeController extends Controller
             'basica' => $basica,
 
 
-
-
         ];
 
-       /* $view =  \View::make('pdfview', compact('data'))->render();
+        $view =  \View::make('pdfview', compact('data'))->render();
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->loadHTML( $view );
-        return $pdf->inline();*/
+        return $pdf->inline();
 
-
-        $snappy = new Pdf();
-        $snappy->setBinary('/usr/local/bin/wkhtmltopdf');
-
-        $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename="file.pdf"');
-        echo $snappy->getOutput('http://www.github.com');
-
-
+       // return \PDF::loadFile('http://www.github.com')->stream('github.pdf');
 
         // http://imfa.es/pdfview1
         //return $pdf->download( '' . $name . '.pdf');
