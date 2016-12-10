@@ -34,7 +34,7 @@
     <div class="col-xs-6">
         <div style="height: 182px">
             {{--<img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png" class="img-responsive"/>--}}
-            <img src="https://imfacturacion.com/imfa/logo-ludoteca.png" class="img-responsive"/>
+            <img src="http://imfa.es/imfa/logo-ludoteca.png" class="img-responsive"/>
         </div>
 
         <div style="border: 1px solid black;height: 187px">
