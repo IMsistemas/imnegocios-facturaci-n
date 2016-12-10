@@ -17,8 +17,8 @@
     <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
-    <link rel="stylesheet" href="/datatable/bootstrap-datatables/css/dataTables.bootstrap.css">
-    <link rel="stylesheet" media="all" href="/datatable/bootstrap-datatables/css/datatables.min.css" type="text/css">
+    <link rel="stylesheet" href="/ludoteca/datatable/bootstrap-datatables/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" media="all" href="/ludoteca/datatable/bootstrap-datatables/css/datatables.min.css" type="text/css">
 
 
 
@@ -48,7 +48,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                    <img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png" style="height: 65px; margin-top: -15px;">
+                    <img src="https://www.imfacturacion.com/ludoteca/imfa/logo-ludoteca.png" style="height: 65px; margin-top: -15px;">
 
                 </a>
             </div>
@@ -90,7 +90,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="/datatable/bootstrap-datatables/js/datatables.min.js"></script>
+    <script type="text/javascript" src="/ludoteca/datatable/bootstrap-datatables/js/datatables.min.js"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script>    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script> --}}
 
     <script>
