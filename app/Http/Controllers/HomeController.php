@@ -3,6 +3,7 @@
 namespace imfa\Http\Controllers;
 
 //use Barryvdh\DomPDF\PDF;
+use Knp\Snappy\Pdf;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Response;
@@ -130,11 +131,6 @@ class HomeController extends Controller
         // return view('pdfview1');
 
 
-        /*$snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename="file.pdf"');
-         echo $snappy->getOutput('http://imfa.es');*/
-
        $detalleCabecera = DB::table('cabecera_detalles')->where('cabeceras_id',  $cabeceraInstance->id )->get() ;
        $detalleAdicional = DB::table('documento_adicionals')->where('cabeceras_id',  $cabeceraInstance->id )->get() ;
 
@@ -204,14 +200,23 @@ class HomeController extends Controller
 
         ];
 
-        $view =  \View::make('pdfview', compact('data'))->render();
-
+       /* $view =  \View::make('pdfview', compact('data'))->render();
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->loadHTML( $view );
-        return $pdf->inline();
+        return $pdf->inline();*/
+
+
+        $snappy = new Pdf();
+        $snappy->setBinary('/usr/local/bin/wkhtmltopdf');
+
+        $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="file.pdf"');
+        echo $snappy->getOutput('http://www.github.com');
+
+
 
         // http://imfa.es/pdfview1
-
         //return $pdf->download( '' . $name . '.pdf');
     }
 
