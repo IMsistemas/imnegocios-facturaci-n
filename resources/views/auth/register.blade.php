@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-offset-1">
             <div class="">
                 <div class="">
-                    <img src="https://www.imfacturacion.com/imfa/logo-ludoteca.png">
+                    <img src="https://www.imfacturacion.com/ludoteca/imfa/logo-ludoteca.png">
                 </div>
 
                 <div class="row">

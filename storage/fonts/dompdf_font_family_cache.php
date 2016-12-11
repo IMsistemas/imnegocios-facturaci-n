@@ -80,4 +80,7 @@
   'lato' => array(
     'normal' => $fontDir . '/88396d120b8df37f1c66249eb40dc0fa',
   ),
+  'glyphicons halflings' => array(
+    'normal' => $fontDir . '/049952fa0c110b2f9e38d468b1a08d06',
+  ),
 ) ?>

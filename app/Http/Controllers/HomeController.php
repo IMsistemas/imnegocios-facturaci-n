@@ -2,7 +2,7 @@
 
 namespace imfa\Http\Controllers;
 
-//use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Response;
@@ -118,17 +118,6 @@ class HomeController extends Controller
     public function downPDF($id){
         $cabeceraInstance = Cabecera::find($id);
         $name = $cabeceraInstance->claveAcceso;
-      //  $data = [ 'razonSocialCliente' => $cabeceraInstance->razonSocialCliente , ];
-     //  $pdf = \PDF::loadView('pdfview1', [ 'cabeceraInstance' => $cabeceraInstance ] );
-
-        /*$view =  \View::make('pdfview1', compact('data'))->render();
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadHTML($view);
-        return $pdf->stream('pdfview1');*/
-
-        // http://imfa.es/imfa/logo-ludoteca.png
-        // return view('pdfview1');
-
 
        $detalleCabecera = DB::table('cabecera_detalles')->where('cabeceras_id',  $cabeceraInstance->id )->get() ;
        $detalleAdicional = DB::table('documento_adicionals')->where('cabeceras_id',  $cabeceraInstance->id )->get() ;
@@ -160,10 +149,7 @@ class HomeController extends Controller
             }
         }
 
-
-
         $data = [
-
             'ruc' => $getschemas->ruc ,
             'razonSocial' => $getschemas->razonSocial ,
             'direccionMatriz' => $getschemas->direccionMatriz ,
@@ -193,19 +179,23 @@ class HomeController extends Controller
             'email' => $email,
             'alumno' => $alumno,
             'basica' => $basica,
-
-
         ];
 
-        $view =  \View::make('pdfview', compact('data'))->render();
-        $pdf = App::make('snappy.pdf.wrapper');
+        $view =  \View::make('dompdfview', compact('data'))->render();
+        $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML( $view );
-        return $pdf->inline();
 
-       // return \PDF::loadFile('http://www.github.com')->stream('github.pdf');
+        // presentar en otra pestaña con dompdf
+        return $pdf->stream( $name . '.pdf' )->header('Content-Type','application/pdf');
 
-        // http://imfa.es/pdfview1
-        //return $pdf->download( '' . $name . '.pdf');
+        // descargar directamente con dompdf
+        //return $pdf->download( $name . '.pdf');
+
+        /* Para descargar usando snappy
+         $view =  \View::make('pdfview', compact('data'))->render();
+         $pdf = App::make('snappy.pdf.wrapper');
+         $pdf->loadHTML( $view );
+         return $pdf->inline();*/
     }
 
 

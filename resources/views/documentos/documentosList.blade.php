@@ -33,7 +33,7 @@
                                     <td>{{$docu->identificacionCliente}} </td>
 
                                     <td> <a href="{{ url('download/'.$docu->id.'') }}">xml</a>  </td>
-                                    <td> <a href="{{ url('pdfview/'.$docu->id.'') }}">pdf</a>  </td>
+                                    <td> <a href="{{ url('pdfview/'.$docu->id.'') }}" target="_blank">pdf</a>  </td>
 
                                 </tr>
                             @endforeach
