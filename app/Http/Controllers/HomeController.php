@@ -55,20 +55,26 @@ class HomeController extends Controller
 
     public function saveUpXml( Request $request ){
 
+        // max_file_uploads = 1000 en php.ini
        // $file = $request->file('file');
 
         $files = $request->file('images');
-        // Making counting of uploaded images
         $file_count = count($files);
-        // start count how many uploaded
         $uploadcount = 0;
 
+
        foreach($files as $file) {
-           $rules = array('file' => 'required|mimes:png,xml'); //'required|mimes:png,gif,jpeg,txt,pdf,doc'
+           $rules = array('file' => 'required|mimes:png,xml,Zip,zip,ZIP'); //'required|mimes:png,gif,jpeg,txt,pdf,doc'
            $validator = Validator::make(array('file'=> $file), $rules);
 
 
            if($validator->passes()){
+
+               /*if( $file->getClientOriginalExtension() == 'zip'  ){
+                    echo ' es valido como un: ' .  $file->getClientOriginalExtension();
+               }*/
+
+
               //  $destinationPath = 'uploads';
                 $filename = $file->getClientOriginalName();
               //  $upload_success = $file->move($destinationPath, $filename);
@@ -84,7 +90,7 @@ class HomeController extends Controller
             return Redirect::to('upXml');
         }
         else {
-            Session::flash('message', 'Perdón, solo se permiten archivos xml!');
+            Session::flash('message', 'Perdón, solo se permiten archivos xml y .zip!');
             return Redirect::to('upXml');
         }
 
@@ -177,8 +183,8 @@ class HomeController extends Controller
             'direccion' => $direccion,
             'telefono' => $telefono,
             'email' => $email,
-            'alumno' => $alumno,
-            'basica' => $basica,
+            'alumno' => (isset($alumno)) ? $alumno : '' ,
+            'basica' => (isset($basica)) ? $basica : '',
         ];
 
         $view =  \View::make('dompdfview', compact('data'))->render();
