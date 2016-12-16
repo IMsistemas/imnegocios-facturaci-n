@@ -37,14 +37,16 @@ class CreateCabecerasTable extends Migration
             $table->string('razonSocialCliente');
             $table->string('direccionCliente', 300);
 
-            $table->date('fechaEmision')->nullable();
+            //$table->date('fechaEmision')->nullable();
+            $table->timestamp('fechaEmision')->nullable();
             $table->string('guiaRemision', 15)->nullable();
 
             $table->string('tipoDocumentoIDModificado')->nullable();
             $table->string('tipoDocumentoModificadoCodigo', 2)->nullable();
             $table->string('documentoModificado', 15)->nullable();
             $table->string('motivoModificacion', 300)->nullable();
-            $table->date('fechaDocumentoModificado')->nullable();
+            //$table->date('fechaDocumentoModificado')->nullable();
+            $table->timestamp('fechaDocumentoModificado')->nullable();
 
             $table->decimal('importe', 19, 2)->nullable();
             $table->decimal('descuento', 19, 2)->nullable();
@@ -64,7 +66,8 @@ class CreateCabecerasTable extends Migration
             $table->decimal('icePorcentaje', 19, 2)->nullable();
             $table->decimal('valorIce', 19, 2)->nullable();
 
-            $table->date('periodoFiscal')->nullable();
+            //$table->date('periodoFiscal')->nullable();
+            $table->timestamp('periodoFiscal')->nullable();
             $table->decimal('propina', 19, 2)->nullable();
 
             $table->integer('transportista_id')->unsigned()->nullable();
@@ -76,12 +79,15 @@ class CreateCabecerasTable extends Migration
             $table->string('placaTransportista')->nullable();
             $table->string('direccionPartida')->nullable();
 
-            $table->date('fechaInicioTransporte')->nullable();
-            $table->date('fechaFinTransporte')->nullable();
+            //$table->date('fechaInicioTransporte')->nullable();
+            $table->timestamp('fechaInicioTransporte')->nullable();
+            $table->timestamp('fechaFinTransporte')->nullable();
+            //$table->date('fechaFinTransporte')->nullable();
 
             $table->boolean('enviado')->nullable();
             $table->boolean('autorizado')->nullable();
-            $table->date('fechaAutorizo')->nullable();
+            //$table->date('fechaAutorizo')->nullable();
+            $table->timestamp('fechaAutorizo')->nullable();
             $table->string('autorizo')->nullable();
 
             $table->integer('tipo_ambiente_id')->unsigned();
@@ -103,6 +109,7 @@ class CreateCabecerasTable extends Migration
             $table->boolean('correoEnviado')->nullable();
             $table->boolean('seleccionado', false );
             $table->string('xml', 1000000)->nullable();
+            $table->string('pdf', 1000000)->nullable();
 
             $table->integer('schemas_id')->unsigned()->nullable();
             $table->foreign('schemas_id')->references('id')->on('schemas');

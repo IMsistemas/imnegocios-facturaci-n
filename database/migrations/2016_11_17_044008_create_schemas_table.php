@@ -17,7 +17,8 @@ class CreateSchemasTable extends Migration
 
             $table->string('ruc', 13)->index();
             $table->string('nombre')->unique()->index();
-            $table->date('fechaActivacion');
+            //$table->date('fechaActivacion');
+            $table->timestamp('fechaActivacion')->nullable();
 
             // antes de general
             $table->string('razonSocial');

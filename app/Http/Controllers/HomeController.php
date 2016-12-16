@@ -168,7 +168,7 @@ class HomeController extends Controller
             'fechaAutorizo'         => $cabeceraInstance->fechaAutorizo,
             'fechaEmision'          => $cabeceraInstance->fechaEmision,
             'claveAcceso'           => $cabeceraInstance->claveAcceso,
-            'comprobante'           => $cabeceraInstance->establecimientoCodigo .'-'. $cabeceraInstance->puntoEmisionCodigo .'-'. $cabeceraInstance->comprobante,
+            'comprobante'           => $cabeceraInstance->establecimientoCodigo .'-'. $cabeceraInstance->puntoEmisionCodigo .'-'.  str_pad( $cabeceraInstance->comprobante , 9, "0", STR_PAD_LEFT),
             'establecimientoDireccion' => $cabeceraInstance->establecimientoDireccion,
             'identificacionCliente' => $cabeceraInstance->identificacionCliente,
 

@@ -129,14 +129,16 @@ class CabeceraController extends Controller
                 $xmls = new \SimpleXMLElement($xmlx);
                 $xmlCDATA = new \SimpleXMLElement($xmls->comprobante);
 
-
-                $date_array = explode(" ", (string) $xmls->fechaAutorizacion );
-                $datefechaAutorizacion = $date_array[0] ;
+                /*$date_array = explode(" ", (string) $xmls->fechaAutorizacion );
+                $datefechaAutorizacion = $date_array[0] ;*/
 
                 //$date = '25/05/2010 11:14:44.000';
-                $date = str_replace('/', '-', $datefechaAutorizacion );
-                $temDate = date('Y-m-d', strtotime($date)) ;
-                //echo date('Y-m-d', strtotime($date)) . '<br>' ;
+                $date = str_replace('/', '-', $xmls->fechaAutorizacion );
+                $fechaAutorizacionTmp = date('Y-m-d H:i:s', strtotime($date)) ;
+
+
+                $dateFemision = str_replace('/', '-', $xmlCDATA->infoFactura->fechaEmision );
+                $fechaEmisionTmp = date('Y-m-d H:i:s', strtotime($dateFemision)) ;
 
                /* $fecha_actual = date('Y-m-d');
                 $date =  new \DateTime( '2016/10/28'  );  // (string) $xmls->fechaAutorizacion ;   // new \DateTime( '13/10/2016'  );
@@ -236,7 +238,7 @@ class CabeceraController extends Controller
                 $cabeceraInstance = new Cabecera();
                 $cabeceraInstance->autorizado = true ;
                 $cabeceraInstance->autorizo = $xmls->numeroAutorizacion;
-                $cabeceraInstance->fechaAutorizo =  $temDate   ;     //$fromateada;   $xmls->fechaAutorizacion
+                $cabeceraInstance->fechaAutorizo = $fechaAutorizacionTmp   ;     //$fromateada;   $xmls->fechaAutorizacion  $temDate
 
 
                 // ---- infoTributaria ----
@@ -257,7 +259,7 @@ class CabeceraController extends Controller
                     //echo 'es documento factura' ;
                 }
 
-                $cabeceraInstance->fechaEmision = $temDate ; //$xmlCDATA->infoFactura->fechaEmision ;
+                $cabeceraInstance->fechaEmision = $fechaEmisionTmp ; //$xmlCDATA->infoFactura->fechaEmision    $temDate ;
                 $cabeceraInstance->establecimientoDireccion =  $xmlCDATA->infoFactura->dirEstablecimiento ;
                 // obligadoContabilidad
                 $cabeceraInstance->tipoIdentificacionClienteCodigo = $xmlCDATA->infoFactura->tipoIdentificacionComprador ;

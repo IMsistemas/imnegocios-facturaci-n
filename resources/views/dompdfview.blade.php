@@ -149,7 +149,7 @@
 
             <div style="font-size: 14px; margin-top: 15px;"><span style="font-weight: bold;">No.:</span> {{ $data['comprobante'] }} </div>
 
-            <div style="font-size: 16px; margin-top: 15px;"><span>NUMERO DE AUTORIZACION</span></div>
+            <div style="font-size: 16px; margin-top: 15px;"><span>NUMERO DE AUTORIZACIÓN</span></div>
 
             <div style="font-size: 14px; font-weight: bold;"><span> {{ $data['autorizo'] }} </span></div>
 
@@ -157,7 +157,7 @@
                 <table style="width: 100%" border="0">
                     <tr>
                         <td style="width: 42%;">FECHA Y HORA DE AUTORIZACION:</td>
-                        <td>  {{$data['fechaAutorizo']}} 12:55:49 </td>
+                        <td>  {{ date('d-m-Y H:i:s', strtotime( $data['fechaAutorizo'] ))  }}  </td>
                     </tr>
                 </table>
             </div>
@@ -184,7 +184,7 @@
             </tr>
             <tr>
                 <td style="font-weight: bold;">Fecha de Emisión:</td>
-                <td > {{$data['fechaEmision']}} </td>
+                <td >    {{ date('d-m-Y', strtotime( $data['fechaEmision'] ))  }}      </td>
                 <td style="font-weight: bold;">Guía Remisión:</td>
                 <td > </td>
             </tr>
@@ -287,27 +287,27 @@
         <div class="middle_second" style="">
             <table style="width: 100%; font-size: 11px;" border="1" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td style="width: 60%; font-weight: bold;">SUBTOTAL:</td>
-                    <td style="text-align: right;"> {{ $data['valorBase'] }} </td>
+                    <td style="width: 60%; font-weight: bold;">SUBTOTAL 14%:</td>
+                    <td style="text-align: right;"> 0.00 </td>
                 </tr>
                 <tr>
                     <td style="width: 60%; font-weight: bold;">SUBTOTAL 0%:</td>
+                    <td style="text-align: right;"> {{ $data['valorBase'] }} </td>
+                </tr>
+                <tr>
+                    <td style="width: 60%; font-weight: bold;">SUBTOTAL No objeto de IVA:</td>
                     <td style="text-align: right;"> 0.00 </td>
                 </tr>
                 <tr>
-                    <td style="width: 60%; font-weight: bold;">SUBTOTAL NO OBJ IVA:</td>
-                    <td style="text-align: right;"> 0.00 </td>
-                </tr>
-                <tr>
-                    <td style="width: 60%; font-weight: bold;">SUBTOTAL EXENTO IVA:</td>
+                    <td style="width: 60%; font-weight: bold;">SUBTOTAL Exento de IVA:</td>
                     <td style="text-align: right;"> 0.00 </td>
                 </tr>
                 <tr>
                     <td style="width: 60%; font-weight: bold;">SUBTOTAL SIN IMPUESTO:</td>
-                    <td style="text-align: right;"> {{ $data['descuentoTotal'] }} </td>
+                    <td style="text-align: right;"> {{ $data['valorBase'] }} </td>
                 </tr>
                 <tr>
-                    <td style="width: 60%; font-weight: bold;">DESCUENTO:</td>
+                    <td style="width: 60%; font-weight: bold;">TOTAL Descuento:</td>
                     <td style="text-align: right;"> 0.00 </td>
                 </tr>
                 <tr>
@@ -315,7 +315,7 @@
                     <td style="text-align: right;"> 0.00 </td>
                 </tr>
                 <tr>
-                    <td style="width: 60%; font-weight: bold;">IVA:</td>
+                    <td style="width: 60%; font-weight: bold;">IVA 14%:</td>
                     <td style="text-align: right;"> 0.00 </td>
                 </tr>
                 <tr>
@@ -327,8 +327,18 @@
                     <td style="text-align: right;"> 0.00 </td>
                 </tr>
                 <tr>
-                    <td style="width: 60%; font-weight: bold;">VALOR A PAGAR:</td>
+                    <td style="width: 60%; font-weight: bold;">VALOR TOTAL:</td>
                     <td style="text-align: right;"> {{ $data['valorTotal'] }} </td>
+                </tr>
+
+
+                <tr>
+                    <td style="width: 60%; font-weight: bold;">VALOR TOTAL SIN SUBSIDIO:</td>
+                    <td style="text-align: right;">  0.00 </td>
+                </tr>
+                <tr>
+                    <td style="width: 60%; font-weight: bold;">AHORRO POR SUBSIDIO:</td>
+                    <td style="text-align: right;"> 0.00 </td>
                 </tr>
             </table>
         </div>
