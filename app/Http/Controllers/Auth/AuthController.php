@@ -74,4 +74,6 @@ class AuthController extends Controller
             'primerApellido' => $data['primerApellido'],
         ]);
     }
+
+
 }

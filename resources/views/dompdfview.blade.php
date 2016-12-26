@@ -101,7 +101,8 @@
     <div id="div_superior">
         <div class="left">
             <div style="margin-top: 5px;">
-                <img src="https://www.imfacturacion.com/ludoteca/imfa/logo-ludoteca.png" style="width: 60%; height: 35%; margin-left:40px ;"/>
+                <img src="https://www.imfacturacion.com/ludoteca/imfa/{{ $data['logo']  }}" style="width: 60%; height: 35%; margin-left:40px ;"/>
+                {{--<img src="http://imfa.es/imfa/{{ $data['logo']  }}" style="width: 60%; height: 35%; margin-left:40px ;"/>--}}
             </div>
 
             <div class="left_bottom" >

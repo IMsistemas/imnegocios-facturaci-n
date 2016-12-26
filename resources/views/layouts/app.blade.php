@@ -63,22 +63,35 @@
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Autenticar</a></li>
                         <li><a href="{{ url('/register') }}">Registrar</a></li>
-                    @else
+
+                    @elseif (Auth::user()->schemaID == '')
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name .' '. Auth::user()->primerApellido }} <span class="caret"></span>
                             </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/documentos') }}">Listado documentos</a></li>
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i> Salir</a></li>
+                            </ul>
+                        </li>
 
+                    @elseif(Auth::user()->schemaID != '')
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                {{ Auth::user()->name .' '. Auth::user()->primerApellido }} <span class="caret"></span>
+                            </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/establecimiento') }}">Listado Establecimiento</a></li>
                                 <li><a href="{{ url('/establecimiento/create') }}">Crear Establecimiento</a></li>
                                 <li><a href="{{ url('/documentos') }}">Listado documentos</a></li>
                                 <li><a href="{{ url('/upXml') }}">Cargar XMLs</a></li>
                                 <li><a href="{{ url('/ftp') }}">Desplegar xml</a></li>
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Salir</a></li>
+
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i> Admin Salir</a></li>
                             </ul>
                         </li>
                     @endif
+
                 </ul>
             </div>
         </div>

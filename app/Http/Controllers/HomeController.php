@@ -156,6 +156,7 @@ class HomeController extends Controller
         }
 
         $data = [
+            'logo' => $getschemas->logo ,
             'ruc' => $getschemas->ruc ,
             'razonSocial' => $getschemas->razonSocial ,
             'direccionMatriz' => $getschemas->direccionMatriz ,

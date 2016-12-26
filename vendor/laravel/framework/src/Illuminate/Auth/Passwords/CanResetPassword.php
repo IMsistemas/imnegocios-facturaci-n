@@ -13,4 +13,9 @@ trait CanResetPassword
     {
         return $this->email;
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }
