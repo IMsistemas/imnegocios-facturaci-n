@@ -17,7 +17,7 @@ use imfa\Modelos\Nomencladores\Cliente;
 use imfa\Modelos\Nomencladores\Schema;
 use imfa\Modelos\Nomencladores\TipoDocumento;
 use imfa\User;
-use PhpParser\Node\Scalar\String_;
+
 
 
 class CabeceraController extends Controller
@@ -123,7 +123,6 @@ class CabeceraController extends Controller
             $filesxmls = $filesystem->files('XML') ;
 
             foreach( $filesxmls as $fils ){
-                //  echo '$fils: ' . $fils ;
 
                 $xmlx = $filesystem->get($fils) ;
                 $xmls = new \SimpleXMLElement($xmlx);
@@ -219,9 +218,13 @@ class CabeceraController extends Controller
                         $apellidoUno = $arr1[1] ;
                         $apellidoDos = $arr1[2] ;
                     }
+                    elseif($arraySize == 2){
+                        $nametemp =  $arr1[0];
+                        $apellidoUno =  $arr1[1] ;   // $arr1[1] ;  agregar validacion.
+                    }
                     else{
                         $nametemp =  $arr1[0];
-                        $apellidoUno = $arr1[1] ;
+                        $apellidoUno = '' ;   // $arr1[1] ;  agregar validacion.
                     }
 
                     User::create([
@@ -276,7 +279,7 @@ class CabeceraController extends Controller
                 $cabeceraInstance->tipo_emision_id = $getTipoEmisionsid ;                              // nn
                 $cabeceraInstance->seleccionado = true;
 
-                $cabeceraInstance->xml = $filesystem->get($fils) ;
+                $cabeceraInstance->xml = $filesystem->get($fils) ;     // $fils
                 $cabeceraInstance->save();
 
                 //Detalles --- Facturas   --- verificar  if( $xmlCDATA->infoTributaria->codDoc == '01' )
@@ -299,18 +302,24 @@ class CabeceraController extends Controller
                         'cabeceras_id' => $cabeceraInstance->id ,
                     ])->save();
                 }
-
-                try{
-                     //$filesystem->delete($fils) ;
-
-                    $temp = $fils ;
-                    $outizq = strstr($temp, "/", false);
-                    Storage::move( $fils , 'XMLTMP' . $outizq  );
-
-                }catch (FileNotFoundException $e ){
-                    echo ' FileNotFoundException ' . $e ;
-                }
             }
+
+            try{
+
+                foreach( $filesxmls as $fils ) {
+
+                    Storage::disk('ftpCopy')->put( $fils , $fils );
+                    
+                    $filesystem->delete($fils) ;
+                }
+                /*$temp =  $filesxmls[$i] ;   //$fils ;
+                $outizq = strstr($temp, "/", false);
+                Storage::move( $filesxmls[$i] , 'XMLTMP' . $outizq  );   //Storage::move( $fils , 'XMLTMP' . $outizq  );*/
+
+            }catch (FileNotFoundException $e ){
+                echo ' FileNotFoundException ' . $e ;
+            }
+
         }
         else{
            // echo ' este usuario no tiene esquema.... ';

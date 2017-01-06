@@ -98,6 +98,17 @@ return [
             // 'timeout'  => 30,
         ],
 
+        'ftpCopy' => [
+            'driver'   => 'ftp',
+            'host'     => '144.208.65.224',
+            'username' => 'imfacturacion',
+            'password' => 'EysK1i6E',
+            'port'     => 21,
+            'passive'  => true,
+            'root'     => '/archivo_xml/XMLTMP',
+
+        ],
+
     ],
 
 ];
